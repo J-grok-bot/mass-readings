@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Mass Readings</title>
+<meta name="description" content="Today's Catholic Mass readings, every day.">
+<meta name="theme-color" content="#faf7f2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#16140f" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Mass Readings">
+<meta name="application-name" content="Mass Readings">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="favicon.ico" sizes="48x48">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" type="image/png" sizes="32x32">
+<link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+<style>
+  :root{
+    --bg:#faf7f2; --fg:#211d17; --muted:#7a7064; --accent:#8a2b2b; --rule:#e6dfd3; --card:#fffdf9;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+    --sans: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#16140f; --fg:#ece6db; --muted:#9d9385; --accent:#d9a46a; --rule:#2e2a22; --card:#1d1a15; }
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:19px;line-height:1.62;
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  main{max-width:640px;margin:0 auto;padding:0 22px 40px}
+  header{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--rule);
+         padding:12px 14px 6px}
+  .nav{display:flex;align-items:center;justify-content:space-between;gap:8px;max-width:640px;margin:0 auto}
+  .nav > button{appearance:none;border:1px solid var(--rule);background:var(--card);color:var(--fg);
+       width:40px;height:40px;border-radius:50%;font-size:20px;line-height:1;cursor:pointer;flex:none;
+       font-family:var(--sans);display:grid;place-items:center}
+  .nav > button:active{transform:scale(.95)}
+  .when{text-align:center;flex:1;min-width:0}
+  .date{font-family:var(--sans);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .today-link{font-family:var(--sans);font-size:12px;color:var(--accent);background:none;border:0;padding:2px 6px;cursor:pointer;visibility:hidden}
+  .today-link.show{visibility:visible}
+  h1{font-size:26px;line-height:1.25;font-weight:600;margin:26px 0 4px;text-align:center;text-wrap:balance}
+  .memorial{font-style:italic;color:var(--muted);text-align:center;font-size:16px;margin:0 0 6px}
+  section{padding:22px 0 6px;border-top:1px solid var(--rule);margin-top:22px}
+  section:first-of-type{border-top:0;margin-top:6px}
+  h2{font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 2px;font-weight:700}
+  .cite{font-family:var(--sans);font-size:14px;color:var(--muted);margin:0 0 12px}
+  .text p{margin:0 0 .9em}
+  .prose p{margin:0 0 .55em}
+  .psalm .text p{padding-left:1.2em;text-indent:-1.2em}
+  .response{font-style:italic;margin:0 0 14px}
+  .response b{font-style:normal;font-family:var(--sans);font-size:13px;color:var(--accent);margin-right:6px}
+  .acclamation .text{font-style:italic}
+  .status{text-align:center;color:var(--muted);font-family:var(--sans);font-size:15px;padding:60px 10px}
+  .status button{margin-top:12px;font:inherit;padding:8px 16px;border-radius:20px;border:1px solid var(--rule);background:var(--card);color:var(--fg)}
+  footer{font-family:var(--sans);font-size:12px;color:var(--muted);text-align:center;margin-top:30px;padding-top:18px;border-top:1px solid var(--rule);line-height:1.5}
+  footer a{color:inherit}
+  .note{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:-4px}
+</style>
+</head>
+<body>
+<header>
+  <div class="nav">
+    <button id="prev" aria-label="Previous day">‹</button>
+    <div class="when">
+      <div class="date" id="date">&nbsp;</div>
+      <button class="today-link" id="today">Back to today</button>
+    </div>
+    <button id="next" aria-label="Next day">›</button>
+  </div>
+</header>
+<main>
+  <div id="content"><div class="status">Loading today's readings…</div></div>
+  <footer id="footer"></footer>
+</main>
+<script>
+(() => {
+  const EVZ = 'https://feed.evangelizo.org/v2/reader.php';
+  const UNI = d => `https://universalis.com/usa/${d}/jsonpmass.js`;
+  const $ = id => document.getElementById(id);
+  let current = null, loadToken = 0;
+
+  // ---------- date helpers (device-local date) ----------
+  const ymd = d => `${d.getFullYear()}${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}`;
+  const today = () => { const d = new Date(); d.setHours(12,0,0,0); return d; };
+  const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+  const sameDay = (a,b) => ymd(a) === ymd(b);
+  const fmtDate = d => d.toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric',year:'numeric'});
+
+  // ---------- text helpers ----------
+  const esc = s => s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const decode = s => { const t = document.createElement('textarea'); t.innerHTML = s; return t.value; };
+  const clean = s => decode(String(s||'').replace(/<br\s*\/?>/gi,'\n').replace(/<\/(div|p)>/gi,'\n').replace(/<[^>]+>/g,''))
+                       .replace(/\u00a0/g,' ').replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+  const proseParas = s => s.split(/\n+/).map(p => p.trim()).filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
+  const paras = s => s.split(/\n\s*\n/).map(p => `<p>${esc(p.trim()).replace(/\n/g,'<br>')}</p>`).join('');
+  // "Ps 33(32),1-2.4-5." -> "Ps 33:1-2, 4-5"
+  const cite = s => { s = clean(s).replace(/\.$/,'').replace(/^(Ps\w*\s+\d+)\(\d+\)/,'$1');
+                      return s.replace(/(\d+),/, '$1:').replace(/\.(?=\d)/g, ', '); };
+
+  // ---------- sources ----------
+  async function fetchEvangelizo(d){
+    const r = await fetch(`${EVZ}?date=${d}&type=xml&lang=AM`, {cache:'no-cache'});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    const xml = await r.text();
+    if(!/<evangelizo>/.test(xml)) throw new Error('No data for this date');
+    const tag = n => { const m = xml.match(new RegExp(`<${n}>\\s*<!\\[CDATA\\[([\\s\\S]*?)\\]\\]>\\s*</${n}>`)); return m ? m[1].trim() : ''; };
+    const reading = (k) => ({ cite: cite(tag(`reading_${k}_st`)), text: clean(tag(`reading_${k}`)) });
+    const out = { day: clean(tag('litugic_t')), saint: clean(tag('saint')),
+      r1: reading('text1'), ps: reading('text2'), r2: reading('text3'), g: reading('gospel') };
+    if(!out.g.text) throw new Error('Empty readings');
+    return out;
+  }
+
+  // Universalis JSONP uses a fixed callback name, so serialize calls.
+  let uniQueue = Promise.resolve();
+  function fetchUniversalis(d){
+    const job = uniQueue.then(() => new Promise((resolve,reject) => {
+      const s = document.createElement('script');
+      const done = (fn,v) => { clearTimeout(t); delete window.universalisCallback; s.remove(); fn(v); };
+      const t = setTimeout(() => done(reject, new Error('timeout')), 12000);
+      window.universalisCallback = data => done(resolve, data);
+      s.onerror = () => done(reject, new Error('load error'));
+      s.src = UNI(d); document.head.appendChild(s);
+    }));
+    uniQueue = job.catch(()=>{});
+    return job;
+  }
+  const uniLines = html => { const doc = new DOMParser().parseFromString(html||'','text/html');
+    const divs = [...doc.body.querySelectorAll('div')];
+    return divs.length ? divs.map(x => x.textContent.replace(/\u00a0/g,' ').trim()) : [doc.body.textContent.trim()]; };
+  const uniText = (html, prose) => { const L = uniLines(html); return prose ? L.join('\n\n') : L.join('\n'); };
+  function uniPsalm(html){ // first italic line = response; stanzas split by margin-top divs
+    const doc = new DOMParser().parseFromString(html||'','text/html');
+    let response = '', out = [];
+    doc.body.querySelectorAll('div').forEach((div,i) => {
+      const txt = div.textContent.replace(/\u00a0/g,' ').trim();
+      if(i===0 && div.querySelector('i')){ response = txt; return; }
+      if(div.querySelector('i') && txt === response){ out.push('\n'); return; } // repeated response marks stanza
+      if(/margin-top/.test(div.getAttribute('style')||'') && out.length) out.push('\n');
+      out.push(txt);
+    });
+    return { response, text: out.join('\n').replace(/\n\n\n+/g,'\n\n').trim() };
+  }
+  const bookKey = c => { const m = clean(c).match(/^([1-3]?\s*[A-Za-z]{3})\w*\s+(\d+)/); return m ? (m[1].replace(/\s/g,'').toLowerCase()+m[2]) : ''; };
+
+  // ---------- cache ----------
+  const cacheGet = k => { try { return JSON.parse(localStorage.getItem('mr:'+k)); } catch { return null; } };
+  const cacheSet = (k,v) => { try {
+      localStorage.setItem('mr:'+k, JSON.stringify(v));
+      const keys = Object.keys(localStorage).filter(x=>x.startsWith('mr:')).sort();
+      while(keys.length > 14) localStorage.removeItem(keys.shift());
+    } catch {} };
+
+  async function getReadings(d){
+    const key = ymd(d);
+    const cached = cacheGet(key);
+    if(cached && cached.v === 2) return cached;
+    const [evz, uni] = await Promise.allSettled([fetchEvangelizo(key), fetchUniversalis(key)]);
+    let data;
+    if(evz.status === 'fulfilled'){
+      const e = evz.value;
+      data = { v:2, src:'usccb', day:e.day, saint:e.saint, r1:e.r1, ps:{...e.ps, response:''}, r2:e.r2, ga:null, g:e.g };
+      if(uni.status === 'fulfilled'){
+        const u = uni.value;
+        // Only borrow the psalm response + acclamation if both sources agree on the Gospel.
+        if(u.Mass_G && bookKey(u.Mass_G.source) === bookKey(e.g.cite)){
+          if(u.Mass_Ps) data.ps.response = uniPsalm(u.Mass_Ps.text).response;
+          if(u.Mass_GA) data.ga = { cite: clean(u.Mass_GA.source).replace(/^cf\.\s*/i,'cf. ').replace(/([A-Za-z])(\d)/,'$1 $2'), text: uniText(u.Mass_GA.text) };
+          data.mixed = true;
+        }
+      }
+    } else if(uni.status === 'fulfilled'){
+      const u = uni.value, dayLines = uniLines(u.day);
+      const ps = u.Mass_Ps ? uniPsalm(u.Mass_Ps.text) : {response:'',text:''};
+      const rd = x => x ? { cite: clean(x.source), text: uniText(x.text, true) } : {cite:'',text:''};
+      data = { v:2, src:'universalis', day: dayLines[0]||'', saint: (dayLines[1]||'').replace(/^or\s+/,''),
+        r1: rd(u.Mass_R1), ps: { cite: u.Mass_Ps ? clean(u.Mass_Ps.source) : '', text: ps.text, response: ps.response },
+        r2: rd(u.Mass_R2), ga: u.Mass_GA ? { cite: clean(u.Mass_GA.source), text: uniText(u.Mass_GA.text) } : null, g: rd(u.Mass_G) };
+    } else {
+      throw evz.reason || uni.reason;
+    }
+    cacheSet(key, data);
+    return data;
+  }
+
+  // ---------- render ----------
+  function section(cls, title, r, extra=''){
+    const prose = cls==='reading' || cls==='gospel';
+    if(!r || !r.text) return '';
+    return `<section class="${cls}"><h2>${title}</h2>${r.cite?`<div class="cite">${esc(r.cite)}</div>`:''}${extra}<div class="text${prose?' prose':''}">${prose?proseParas(r.text):paras(r.text)}</div></section>`;
+  }
+  function render(data){
+    const resp = data.ps.response ? `<p class="response"><b>R.</b>${esc(data.ps.response)}</p>` : '';
+    const saint = data.saint && !data.day.toLowerCase().includes(data.saint.toLowerCase().slice(0,12)) ? `<p class="memorial">${esc(data.saint)}</p>` : '';
+    $('content').innerHTML =
+      `<h1>${esc(data.day || 'Readings of the Day')}</h1>${saint}` +
+      section('reading','First Reading', data.r1) +
+      section('psalm','Responsorial Psalm', data.ps, resp) +
+      section('reading','Second Reading', data.r2) +
+      section('acclamation','Gospel Acclamation', data.ga) +
+      section('gospel','Gospel', data.g);
+    $('footer').innerHTML = data.src === 'usccb'
+      ? `Scripture texts from the Lectionary for Mass (USA), © Confraternity of Christian Doctrine, via <a href="https://dailygospel.org/AM/gospel">Evangelizo / DailyGospel.org</a>.` +
+        (data.mixed ? `<br>Psalm response &amp; acclamation via <a href="https://universalis.com">Universalis</a> (may differ in wording).` : '') +
+        `<br><a href="https://bible.usccb.org/bible/readings/${usccbCode(current)}.cfm">Open on USCCB.org</a>`
+      : `Readings via <a href="https://universalis.com">Universalis</a> (Jerusalem Bible / Grail Psalms). © Universalis Publishing Ltd.` +
+        `<br><a href="https://bible.usccb.org/bible/readings/${usccbCode(current)}.cfm">Open USCCB version</a>`;
+  }
+  const usccbCode = d => `${String(d.getMonth()+1).padStart(2,'0')}${String(d.getDate()).padStart(2,'0')}${String(d.getFullYear()).slice(2)}`;
+
+  async function show(d){
+    current = d; const token = ++loadToken;
+    $('date').textContent = fmtDate(d);
+    $('today').classList.toggle('show', !sameDay(d, today()));
+    document.title = sameDay(d, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    $('content').innerHTML = `<div class="status">Loading readings…</div>`; $('footer').innerHTML = '';
+    try {
+      const data = await getReadings(d);
+      if(token !== loadToken) return;
+      render(data); window.scrollTo(0,0);
+    } catch(err){
+      if(token !== loadToken) return;
+      $('content').innerHTML = `<div class="status">Couldn't load the readings${navigator.onLine?'':' (you appear to be offline)'}.<br>
+        ${Math.abs((d - today())/864e5) > 25 ? '<small>The free feeds only cover about a month around today.</small><br>' : ''}
+        <button id="retry">Try again</button><br><br><a href="https://bible.usccb.org/bible/readings/${usccbCode(d)}.cfm" style="color:var(--accent)">Open on USCCB.org</a></div>`;
+      $('retry').onclick = () => show(d);
+    }
+    // quietly prefetch neighbours
+    if(token === loadToken) [1,-1].forEach(n => getReadings(addDays(d,n)).catch(()=>{}));
+  }
+
+  $('prev').onclick = () => show(addDays(current,-1));
+  $('next').onclick = () => show(addDays(current, 1));
+  $('today').onclick = () => show(today());
+  document.addEventListener('keydown', e => { if(e.key==='ArrowLeft') $('prev').click(); if(e.key==='ArrowRight') $('next').click(); });
+  // swipe left/right to change day
+  let sx=null, sy=null;
+  addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
+  addEventListener('touchend', e => { if(sx===null) return; const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*2) (dx<0?$('next'):$('prev')).click(); sx=null; }, {passive:true});
+  // When reopened on a new day, jump to that day's readings.
+  let lastToday = ymd(today()), wasOnToday = true;
+  document.addEventListener('visibilitychange', () => {
+    if(document.visibilityState !== 'visible') { wasOnToday = sameDay(current, today()) || ymd(current) === lastToday; return; }
+    const t = ymd(today()); if(t !== lastToday){ lastToday = t; if(wasOnToday) show(today()); }
+  });
+
+  const q = new URLSearchParams(location.search).get('date');
+  show(q && /^\d{8}$/.test(q) ? new Date(+q.slice(0,4), +q.slice(4,6)-1, +q.slice(6,8), 12) : today());
+  if('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(()=>{});
+})();
+</script>
+</body>
+</html>
