@@ -29,7 +29,8 @@
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--serif);font-size:19px;line-height:1.62;
-       padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+       padding:env(safe-area-inset-top) env(safe-area-inset-right) calc(var(--tabh) + env(safe-area-inset-bottom)) env(safe-area-inset-left)}
+  :root{--tabh:58px}
   main{max-width:640px;margin:0 auto;padding:0 22px 40px}
   header{position:sticky;top:0;z-index:2;background:var(--bg);border-bottom:1px solid var(--rule);
          padding:12px 14px 6px}
@@ -59,9 +60,49 @@
   footer{font-family:var(--sans);font-size:12px;color:var(--muted);text-align:center;margin-top:30px;padding-top:18px;border-top:1px solid var(--rule);line-height:1.5}
   footer a{color:inherit}
   .note{font-family:var(--sans);font-size:12px;color:var(--muted);margin-top:-4px}
+  [hidden]{display:none!important}
+  /* bottom tab bar */
+  .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;
+          background:var(--bg);background:color-mix(in srgb, var(--bg) 92%, transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+          border-top:1px solid var(--rule);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+  .tabbar button{appearance:none;flex:1;max-width:220px;height:var(--tabh);border:0;background:none;color:var(--muted);cursor:pointer;
+          font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
+          -webkit-tap-highlight-color:transparent}
+  .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .tabbar button[aria-selected="true"]{color:var(--accent)}
+  /* Mass Parts */
+  .title{font-family:var(--sans);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600;text-align:center;line-height:40px}
+  .jump{display:flex;gap:6px;overflow-x:auto;max-width:640px;margin:2px auto 0;padding:2px 0 4px;scrollbar-width:none}
+  .jump::-webkit-scrollbar{display:none}
+  .jump button{flex:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--fg);background:var(--card);border:1px solid var(--rule);
+          border-radius:16px;padding:5px 12px;cursor:pointer;white-space:nowrap}
+  .jump button:active{transform:scale(.96)}
+  .rite{scroll-margin-top:100px}
+  .rite h3{font-size:24px;line-height:1.25;font-weight:600;text-align:center;margin:28px 0 8px}
+  .parts-intro{font-family:var(--sans);font-size:13px;color:var(--muted);text-align:center;margin:18px 0 0}
+  .parts-intro b{color:var(--fg)}
+  details{border-top:1px solid var(--rule)}
+  .rite details:last-child{border-bottom:1px solid var(--rule)}
+  summary{list-style:none;cursor:pointer;padding:14px 0 12px;font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;
+          color:var(--accent);font-weight:700;display:flex;justify-content:space-between;align-items:center;gap:10px}
+  summary::-webkit-details-marker{display:none}
+  summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);
+          margin:0 4px 4px 0;transition:transform .15s;flex:none}
+  details:not([open]) summary::after{transform:rotate(-45deg);margin-bottom:0}
+  .lines{padding:0 0 14px}
+  .ln{display:grid;grid-template-columns:34px 1fr;gap:0 6px;margin:0 0 .6em}
+  .who{font-family:var(--sans);font-size:11.5px;font-weight:700;color:var(--accent);padding-top:.38em;letter-spacing:.02em}
+  .people .say{font-weight:700}
+  .gap{display:block;height:.6em}
+  .say .l{display:block;padding-left:1em;text-indent:-1em}
+  .say .l.in{padding-left:2em}
+  .rubric{font-family:var(--sans);font-size:13.5px;line-height:1.45;font-style:italic;color:var(--muted);margin:.2em 0 .7em 40px}
+  .or{font-family:var(--sans);font-size:13px;font-style:italic;color:var(--muted);margin:-.1em 0 .5em 40px}
+  .lines h4{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--fg);margin:1.1em 0 .5em 40px}
 </style>
 </head>
 <body>
+<div id="view-readings" role="tabpanel" aria-labelledby="tab-readings">
 <header>
   <div class="nav">
     <button id="prev" aria-label="Previous day">‹</button>
@@ -76,6 +117,26 @@
   <div id="content"><div class="status">Loading today's readings…</div></div>
   <footer id="footer"></footer>
 </main>
+</div>
+<div id="view-parts" role="tabpanel" aria-labelledby="tab-parts" hidden>
+<header>
+  <div class="title">The Order of Mass</div>
+  <nav class="jump" id="jump" aria-label="Jump to section"></nav>
+</header>
+<main>
+  <p class="parts-intro"><b>P</b> = Priest · <b>D</b> = Deacon (or Priest) · <b>R</b> = Reader · <b>All</b> = People (in bold)</p>
+  <div id="parts-content"></div>
+  <footer>Excerpts from the English translation of The Roman Missal © 2010, International Commission on English in the Liturgy Corporation. All rights reserved.</footer>
+</main>
+</div>
+<nav class="tabbar" role="tablist" aria-label="Sections">
+  <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 4.8v13c3.5-.3 6.5.2 8.5 1.7 2-1.5 5-2 8.5-1.7v-13C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>
+    Readings</button>
+  <button id="tab-parts" role="tab" aria-selected="false" aria-controls="view-parts" data-view="parts">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 8h10"/><path d="M5 21h14"/></svg>
+    Mass Parts</button>
+</nav>
 <script>
 (() => {
   const EVZ = 'https://feed.evangelizo.org/v2/reader.php';
@@ -216,12 +277,12 @@
     current = d; const token = ++loadToken;
     $('date').textContent = fmtDate(d);
     $('today').classList.toggle('show', !sameDay(d, today()));
-    document.title = sameDay(d, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    if(view === 'readings') document.title = sameDay(d, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     $('content').innerHTML = `<div class="status">Loading readings…</div>`; $('footer').innerHTML = '';
     try {
       const data = await getReadings(d);
       if(token !== loadToken) return;
-      render(data); window.scrollTo(0,0);
+      render(data); if(view === 'readings') window.scrollTo(0,0);
     } catch(err){
       if(token !== loadToken) return;
       $('content').innerHTML = `<div class="status">Couldn't load the readings${navigator.onLine?'':' (you appear to be offline)'}.<br>
@@ -233,13 +294,221 @@
     if(token === loadToken) [1,-1].forEach(n => getReadings(addDays(d,n)).catch(()=>{}));
   }
 
+  // ---------- Order of Mass (Roman Missal, 3rd ed., USA, 2011) ----------
+  // Line format: [role, text]. Roles: P = Priest, D = Deacon or Priest, R = Reader, A = All/People, '' = rubric, 'or' = "Or:", 'h' = sub-heading
+  const ORDER = [
+   { id:'intro', title:'Introductory Rites', parts:[
+    { t:'Sign of the Cross', l:[
+      ['P','In the name of the Father, and of the Son, and of the Holy Spirit.'],
+      ['A','Amen.'] ]},
+    { t:'Greeting', l:[
+      ['P','The grace of our Lord Jesus Christ,\nand the love of God,\nand the communion of the Holy Spirit\nbe with you all.'],
+      ['or'],
+      ['P','Grace to you and peace from God our Father\nand the Lord Jesus Christ.'],
+      ['or'],
+      ['P','The Lord be with you.'],
+      ['A','And with your spirit.'],
+      ['','A Bishop, instead of “The Lord be with you,” says: Peace be with you.'] ]},
+    { t:'Penitential Act', l:[
+      ['P','Brethren (brothers and sisters), let us acknowledge our sins,\nand so prepare ourselves to celebrate the sacred mysteries.'],
+      ['','A brief pause for silence follows. One of these forms is used:'],
+      ['h','Form A · I Confess (Confiteor)'],
+      ['A','I confess to almighty God\nand to you, my brothers and sisters,\nthat I have greatly sinned,\nin my thoughts and in my words,\nin what I have done and in what I have failed to do,'],
+      ['','And, striking their breast, they say:'],
+      ['A','through my fault, through my fault,\nthrough my most grievous fault;'],
+      ['','Then they continue:'],
+      ['A','therefore I ask blessed Mary ever-Virgin,\nall the Angels and Saints,\nand you, my brothers and sisters,\nto pray for me to the Lord our God.'],
+      ['h','Form B'],
+      ['P','Have mercy on us, O Lord.'],
+      ['A','For we have sinned against you.'],
+      ['P','Show us, O Lord, your mercy.'],
+      ['A','And grant us your salvation.'],
+      ['h','Form C'],
+      ['','The Priest, Deacon, or another minister says these or other invocations:'],
+      ['P','You were sent to heal the contrite of heart:\nLord, have mercy.'],
+      ['A','Lord, have mercy.'],
+      ['P','You came to call sinners:\nChrist, have mercy.'],
+      ['A','Christ, have mercy.'],
+      ['P','You are seated at the right hand of the Father to intercede for us:\nLord, have mercy.'],
+      ['A','Lord, have mercy.'],
+      ['h','Absolution (after any form)'],
+      ['P','May almighty God have mercy on us,\nforgive us our sins,\nand bring us to everlasting life.'],
+      ['A','Amen.'] ]},
+    { t:'Kyrie (Lord, have mercy)', l:[
+      ['','Follows unless it was already used in Form C above.'],
+      ['P','Lord, have mercy.'], ['A','Lord, have mercy.'],
+      ['P','Christ, have mercy.'], ['A','Christ, have mercy.'],
+      ['P','Lord, have mercy.'], ['A','Lord, have mercy.'],
+      ['or'],
+      ['P','Kyrie, eleison.'], ['A','Kyrie, eleison.'],
+      ['P','Christe, eleison.'], ['A','Christe, eleison.'],
+      ['P','Kyrie, eleison.'], ['A','Kyrie, eleison.'] ]},
+    { t:'Gloria (Glory to God)', l:[
+      ['','On Sundays outside Advent and Lent, and on solemnities and feasts:'],
+      ['A','Glory to God in the highest,\nand on earth peace to people of good will.\nWe praise you,\nwe bless you,\nwe adore you,\nwe glorify you,\nwe give you thanks for your great glory,\nLord God, heavenly King,\nO God, almighty Father.\n\nLord Jesus Christ, Only Begotten Son,\nLord God, Lamb of God, Son of the Father,\nyou take away the sins of the world,\n    have mercy on us;\nyou take away the sins of the world,\n    receive our prayer;\nyou are seated at the right hand of the Father,\n    have mercy on us.\n\nFor you alone are the Holy One,\nyou alone are the Lord,\nyou alone are the Most High,\nJesus Christ,\nwith the Holy Spirit,\nin the glory of God the Father.\nAmen.'] ]},
+    { t:'Collect', l:[
+      ['P','Let us pray.'],
+      ['','All pray in silence for a moment; then the Priest says the Collect, at the end of which:'],
+      ['A','Amen.'] ]}
+   ]},
+   { id:'word', title:'Liturgy of the Word', parts:[
+    { t:'After the First and Second Readings', l:[
+      ['R','The word of the Lord.'],
+      ['A','Thanks be to God.'],
+      ['','After the First Reading, the people repeat the response of the Responsorial Psalm.'] ]},
+    { t:'Gospel', l:[
+      ['','All stand for the Alleluia (or, in Lent, the Gospel Acclamation).'],
+      ['D','The Lord be with you.'],
+      ['A','And with your spirit.'],
+      ['D','A reading from the holy Gospel according to N.'],
+      ['A','Glory to you, O Lord.'],
+      ['','At the end of the Gospel:'],
+      ['D','The Gospel of the Lord.'],
+      ['A','Praise to you, Lord Jesus Christ.'] ]},
+    { t:'Nicene Creed', l:[
+      ['','On Sundays and solemnities, after the homily:'],
+      ['A','I believe in one God,\nthe Father almighty,\nmaker of heaven and earth,\nof all things visible and invisible.\n\nI believe in one Lord Jesus Christ,\nthe Only Begotten Son of God,\nborn of the Father before all ages.\nGod from God, Light from Light,\ntrue God from true God,\nbegotten, not made, consubstantial with the Father;\nthrough him all things were made.\nFor us men and for our salvation\nhe came down from heaven,'],
+      ['','At the words that follow, up to and including “and became man,” all bow.'],
+      ['A','and by the Holy Spirit was incarnate of the Virgin Mary,\nand became man.'],
+      ['A','For our sake he was crucified under Pontius Pilate,\nhe suffered death and was buried,\nand rose again on the third day\nin accordance with the Scriptures.\nHe ascended into heaven\nand is seated at the right hand of the Father.\nHe will come again in glory\nto judge the living and the dead\nand his kingdom will have no end.\n\nI believe in the Holy Spirit, the Lord, the giver of life,\nwho proceeds from the Father and the Son,\nwho with the Father and the Son is adored and glorified,\nwho has spoken through the prophets.\n\nI believe in one, holy, catholic and apostolic Church.\nI confess one Baptism for the forgiveness of sins\nand I look forward to the resurrection of the dead\nand the life of the world to come. Amen.'] ]},
+    { t:'Apostles’ Creed', l:[
+      ['','May be used instead of the Nicene Creed, especially during Lent and Easter Time.'],
+      ['A','I believe in God,\nthe Father almighty,\nCreator of heaven and earth,\nand in Jesus Christ, his only Son, our Lord,'],
+      ['','At the words that follow, up to and including “the Virgin Mary,” all bow.'],
+      ['A','who was conceived by the Holy Spirit,\nborn of the Virgin Mary,'],
+      ['A','suffered under Pontius Pilate,\nwas crucified, died and was buried;\nhe descended into hell;\non the third day he rose again from the dead;\nhe ascended into heaven,\nand is seated at the right hand of God the Father almighty;\nfrom there he will come to judge the living and the dead.\n\nI believe in the Holy Spirit,\nthe holy catholic Church,\nthe communion of saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand life everlasting. Amen.'] ]},
+    { t:'Universal Prayer (Prayer of the Faithful)', l:[
+      ['','After each intention, the people respond. The response varies; the most common is:'],
+      ['R','… let us pray to the Lord.'],
+      ['A','Lord, hear our prayer.'],
+      ['','At the end of the Priest’s concluding prayer:'],
+      ['A','Amen.'] ]}
+   ]},
+   { id:'eucharist', title:'Liturgy of the Eucharist', parts:[
+    { t:'Preparation of the Gifts', l:[
+      ['','If there is no singing, the Priest may say these prayers aloud, and the people respond:'],
+      ['P','Blessed are you, Lord God of all creation,\nfor through your goodness we have received\nthe bread we offer you:\nfruit of the earth and work of human hands,\nit will become for us the bread of life.'],
+      ['A','Blessed be God for ever.'],
+      ['P','Blessed are you, Lord God of all creation,\nfor through your goodness we have received\nthe wine we offer you:\nfruit of the vine and work of human hands\nit will become our spiritual drink.'],
+      ['A','Blessed be God for ever.'] ]},
+    { t:'Invitation to Prayer (Orate, fratres)', l:[
+      ['P','Pray, brethren (brothers and sisters),\nthat my sacrifice and yours\nmay be acceptable to God,\nthe almighty Father.'],
+      ['','The people rise and reply:'],
+      ['A','May the Lord accept the sacrifice at your hands\nfor the praise and glory of his name,\nfor our good\nand the good of all his holy Church.'],
+      ['','At the end of the Prayer over the Offerings:'],
+      ['A','Amen.'] ]},
+    { t:'Preface Dialogue', l:[
+      ['P','The Lord be with you.'],
+      ['A','And with your spirit.'],
+      ['P','Lift up your hearts.'],
+      ['A','We lift them up to the Lord.'],
+      ['P','Let us give thanks to the Lord our God.'],
+      ['A','It is right and just.'] ]},
+    { t:'Sanctus (Holy, Holy, Holy)', l:[
+      ['A','Holy, Holy, Holy Lord God of hosts.\nHeaven and earth are full of your glory.\nHosanna in the highest.\nBlessed is he who comes in the name of the Lord.\nHosanna in the highest.'] ]},
+    { t:'Mystery of Faith', l:[
+      ['P','The mystery of faith.'],
+      ['A','We proclaim your Death, O Lord,\nand profess your Resurrection\nuntil you come again.'],
+      ['or'],
+      ['A','When we eat this Bread and drink this Cup,\nwe proclaim your Death, O Lord,\nuntil you come again.'],
+      ['or'],
+      ['A','Save us, Savior of the world,\nfor by your Cross and Resurrection\nyou have set us free.'] ]},
+    { t:'Doxology and Great Amen', l:[
+      ['P','Through him, and with him, and in him,\nO God, almighty Father,\nin the unity of the Holy Spirit,\nall glory and honor is yours,\nfor ever and ever.'],
+      ['A','Amen.'] ]}
+   ]},
+   { id:'communion', title:'Communion Rite', parts:[
+    { t:'The Lord’s Prayer', l:[
+      ['P','At the Savior’s command\nand formed by divine teaching,\nwe dare to say:'],
+      ['A','Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come,\nthy will be done\non earth as it is in heaven.\nGive us this day our daily bread,\nand forgive us our trespasses,\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.'],
+      ['P','Deliver us, Lord, we pray, from every evil,\ngraciously grant peace in our days,\nthat, by the help of your mercy,\nwe may be always free from sin\nand safe from all distress,\nas we await the blessed hope\nand the coming of our Savior, Jesus Christ.'],
+      ['A','For the kingdom,\nthe power and the glory are yours\nnow and for ever.'] ]},
+    { t:'Sign of Peace', l:[
+      ['P','Lord Jesus Christ,\nwho said to your Apostles,\nPeace I leave you, my peace I give you,\nlook not on our sins,\nbut on the faith of your Church,\nand graciously grant her peace and unity\nin accordance with your will.\nWho live and reign for ever and ever.'],
+      ['A','Amen.'],
+      ['P','The peace of the Lord be with you always.'],
+      ['A','And with your spirit.'],
+      ['D','Let us offer each other the sign of peace.'] ]},
+    { t:'Agnus Dei (Lamb of God)', l:[
+      ['A','Lamb of God, you take away the sins of the world,\nhave mercy on us.\nLamb of God, you take away the sins of the world,\nhave mercy on us.\nLamb of God, you take away the sins of the world,\ngrant us peace.'] ]},
+    { t:'Invitation to Communion', l:[
+      ['P','Behold the Lamb of God,\nbehold him who takes away the sins of the world.\nBlessed are those called to the supper of the Lamb.'],
+      ['A','Lord, I am not worthy\nthat you should enter under my roof,\nbut only say the word\nand my soul shall be healed.'] ]},
+    { t:'Communion', l:[
+      ['P','The Body of Christ.'],
+      ['A','Amen.'],
+      ['','When Communion is also given from the chalice:'],
+      ['P','The Blood of Christ.'],
+      ['A','Amen.'] ]},
+    { t:'Prayer after Communion', l:[
+      ['P','Let us pray.'],
+      ['','At the end of the prayer:'],
+      ['A','Amen.'] ]}
+   ]},
+   { id:'concluding', title:'Concluding Rites', parts:[
+    { t:'Blessing', l:[
+      ['P','The Lord be with you.'],
+      ['A','And with your spirit.'],
+      ['P','May almighty God bless you:\nthe Father, and the Son, and the Holy Spirit.'],
+      ['A','Amen.'] ]},
+    { t:'Dismissal', l:[
+      ['D','Go forth, the Mass is ended.'],
+      ['or'],
+      ['D','Go and announce the Gospel of the Lord.'],
+      ['or'],
+      ['D','Go in peace, glorifying the Lord by your life.'],
+      ['or'],
+      ['D','Go in peace.'],
+      ['A','Thanks be to God.'] ]}
+   ]}
+  ];
+  const ROLE = { P:'P', D:'D', R:'R', A:'All' };
+  const ROLE_TITLE = { P:'Priest', D:'Deacon or Priest', R:'Reader', A:'All (People)' };
+  function renderParts(){
+    const line = ([r,t]) => {
+      if(r==='or') return `<div class="or">Or:</div>`;
+      if(r==='h') return `<h4>${esc(t)}</h4>`;
+      if(!r) return `<div class="rubric">${esc(t)}</div>`;
+      return `<div class="ln ${r==='A'?'people':'priest'}"><span class="who" title="${ROLE_TITLE[r]}">${ROLE[r]}</span><div class="say">${t.split('\n').map(x => x ? `<span class="l${x.startsWith('    ')?' in':''}">${esc(x.trim())}</span>` : '<span class="gap"></span>').join('')}</div></div>`;
+    };
+    $('parts-content').innerHTML = ORDER.map(s =>
+      `<div class="rite" id="rite-${s.id}"><h3>${esc(s.title)}</h3>` +
+      s.parts.map(p => `<details open><summary>${esc(p.t)}</summary><div class="lines">${p.l.map(line).join('')}</div></details>`).join('') +
+      `</div>`).join('');
+    $('jump').innerHTML = ORDER.map(s => `<button data-id="${s.id}">${esc(s.title.replace('Liturgy of the ','').replace(' Rites','').replace(' Rite',''))}</button>`).join('');
+    $('jump').onclick = e => { const b = e.target.closest('button'); if(!b) return;
+      const el = $('rite-'+b.dataset.id), hh = document.querySelector('#view-parts header').offsetHeight;
+      window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - hh - 6, behavior:'smooth' }); };
+  }
+
+  // ---------- tabs ----------
+  const TAB_KEY = 'massTab';  // not "mr:" — that prefix is pruned by the readings cache
+  const scrollPos = { readings:0, parts:0 };
+  let view = 'readings', partsReady = false;
+  function setView(v, restore){
+    if(v !== 'parts') v = 'readings';
+    if(v === view && restore === undefined) return;
+    scrollPos[view] = scrollY;
+    view = v;
+    if(v === 'parts' && !partsReady){ renderParts(); partsReady = true; }
+    $('view-readings').hidden = v !== 'readings';
+    $('view-parts').hidden = v !== 'parts';
+    document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
+    if(v === 'parts') document.title = 'Mass Parts';
+    else if(current) document.title = sameDay(current, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + current.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    window.scrollTo(0, restore ? 0 : scrollPos[v]);
+    try { localStorage.setItem(TAB_KEY, v); } catch {}
+  }
+  document.querySelector('.tabbar').onclick = e => { const b = e.target.closest('button'); if(!b) return;
+    if(b.dataset.view === view) window.scrollTo({top:0, behavior:'smooth'}); else setView(b.dataset.view); };
+
   $('prev').onclick = () => show(addDays(current,-1));
   $('next').onclick = () => show(addDays(current, 1));
   $('today').onclick = () => show(today());
-  document.addEventListener('keydown', e => { if(e.key==='ArrowLeft') $('prev').click(); if(e.key==='ArrowRight') $('next').click(); });
+  document.addEventListener('keydown', e => { if(view !== 'readings') return; if(e.key==='ArrowLeft') $('prev').click(); if(e.key==='ArrowRight') $('next').click(); });
   // swipe left/right to change day
   let sx=null, sy=null;
-  addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
+  addEventListener('touchstart', e => { if(view !== 'readings'){ sx=null; return; } sx=e.touches[0].clientX; sy=e.touches[0].clientY; }, {passive:true});
   addEventListener('touchend', e => { if(sx===null) return; const dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy;
     if(Math.abs(dx)>70 && Math.abs(dx)>Math.abs(dy)*2) (dx<0?$('next'):$('prev')).click(); sx=null; }, {passive:true});
   // When reopened on a new day, jump to that day's readings.
@@ -250,6 +519,8 @@
   });
 
   const q = new URLSearchParams(location.search).get('date');
+  let saved = null; try { saved = localStorage.getItem(TAB_KEY); } catch {}
+  setView(q ? 'readings' : saved, true);
   show(q && /^\d{8}$/.test(q) ? new Date(+q.slice(0,4), +q.slice(4,6)-1, +q.slice(6,8), 12) : today());
   if('serviceWorker' in navigator && location.protocol !== 'file:') navigator.serviceWorker.register('sw.js').catch(()=>{});
 })();
