@@ -98,6 +98,46 @@
   .say .l.in{padding-left:2em}
   .rubric{font-family:var(--sans);font-size:13.5px;line-height:1.45;font-style:italic;color:var(--muted);margin:.2em 0 .7em 40px}
   .or{font-family:var(--sans);font-size:13px;font-style:italic;color:var(--muted);margin:-.1em 0 .5em 40px}
+  /* Rosary */
+  .ros-sets{display:flex;gap:6px;overflow-x:auto;margin:18px 0 0;padding:2px 0;scrollbar-width:none}
+  .ros-sets::-webkit-scrollbar{display:none}
+  .ros-sets button{flex:none;font-family:var(--sans);font-size:13px;font-weight:600;color:var(--fg);background:var(--card);border:1px solid var(--rule);
+          border-radius:16px;padding:5px 12px;cursor:pointer;white-space:nowrap}
+  .ros-sets button i{font-style:normal;font-weight:500;color:var(--muted)}
+  .ros-sets button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .ros-sets button[aria-pressed="true"] i{color:inherit;opacity:.8}
+  .card{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:16px 18px;margin:14px 0 0}
+  .ros-kicker{font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  #ros-myst h3{font-size:24px;line-height:1.25;font-weight:600;margin:2px 0 10px}
+  .myst{margin:0;padding:0 0 0 1.4em}
+  .myst li{margin:0 0 .5em;padding-left:.2em}
+  .myst li::marker{font-family:var(--sans);font-weight:700;color:var(--accent);font-size:.85em}
+  .myst li span{display:block;line-height:1.35}
+  .myst li small{display:block;font-family:var(--sans);font-size:12.5px;color:var(--muted);line-height:1.4}
+  .myst li.cur span{font-weight:700}
+  .ros-note{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:6px 0 0;font-style:italic}
+  .bc-head{display:flex;justify-content:space-between;align-items:center;font-family:var(--sans);font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .bc-reset{font:600 12px var(--sans);letter-spacing:0;text-transform:none;color:var(--muted);background:none;border:0;padding:4px 0 4px 10px;cursor:pointer}
+  .bc-myst{font-size:18px;margin:2px 0 12px;line-height:1.35}
+  .bc-beads{display:grid;grid-template-columns:repeat(10,1fr);gap:6px;justify-items:center}
+  .bead{appearance:none;width:100%;max-width:26px;aspect-ratio:1;border-radius:50%;border:2px solid var(--accent);background:transparent;padding:0;cursor:pointer;transition:background .12s,transform .12s}
+  .bead.on{background:var(--accent)}
+  .bead:active{transform:scale(.85)}
+  .bc-dec{display:flex;justify-content:center;gap:6px;margin:12px 0 12px}
+  .bc-dec span{width:18px;height:4px;border-radius:2px;background:var(--rule)}
+  .bc-dec span.on{background:var(--accent)}
+  .bc-tap{display:block;width:100%;min-height:62px;border-radius:12px;border:0;background:var(--accent);color:var(--bg);font:700 17px var(--sans);cursor:pointer;
+          padding:10px;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .bc-tap small{display:block;font-weight:500;font-size:12.5px;opacity:.85;margin-top:2px}
+  .bc-tap:active{transform:scale(.98)}
+  .bc-tap:disabled{opacity:.6}
+  .ros-h{font-family:var(--sans);font-size:12.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:30px 0 10px}
+  .steps{margin:0;padding:0 0 0 1.5em;font-size:17.5px;line-height:1.5}
+  .steps li{margin:0 0 .55em;padding-left:.2em}
+  .steps li::marker{font-family:var(--sans);font-weight:700;color:var(--accent)}
+  #ros-prayers details:last-child{border-bottom:1px solid var(--rule)}
+  .prayer{padding:0 0 16px}
+  .prayer .l{display:block;padding-left:1em;text-indent:-1em}
   .lines h4{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--fg);margin:1.1em 0 .5em 40px}
 </style>
 </head>
@@ -129,6 +169,21 @@
   <footer>Excerpts from the English translation of The Roman Missal © 2010, International Commission on English in the Liturgy Corporation. All rights reserved.</footer>
 </main>
 </div>
+<div id="view-rosary" role="tabpanel" aria-labelledby="tab-rosary" hidden>
+<header>
+  <div class="title">The Holy Rosary</div>
+</header>
+<main>
+  <div class="ros-sets" id="ros-sets" aria-label="Mysteries"></div>
+  <div class="card" id="ros-myst"></div>
+  <div class="card" id="ros-counter"></div>
+  <h2 class="ros-h">How to pray the Rosary</h2>
+  <ol class="steps" id="ros-steps"></ol>
+  <h2 class="ros-h">The prayers</h2>
+  <div id="ros-prayers"></div>
+  <footer>Steps, mysteries and prayer texts follow the USCCB’s “How to Pray the Rosary.”</footer>
+</main>
+</div>
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 4.8v13c3.5-.3 6.5.2 8.5 1.7 2-1.5 5-2 8.5-1.7v-13C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>
@@ -136,6 +191,9 @@
   <button id="tab-parts" role="tab" aria-selected="false" aria-controls="view-parts" data-view="parts">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v18M7 8h10"/><path d="M5 21h14"/></svg>
     Mass Parts</button>
+  <button id="tab-rosary" role="tab" aria-selected="false" aria-controls="view-rosary" data-view="rosary">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.6" r="1.3"/><circle cx="16.6" cy="5.2" r="1.3"/><circle cx="19" cy="9.4" r="1.3"/><circle cx="17.4" cy="13.6" r="1.3"/><circle cx="7.4" cy="5.2" r="1.3"/><circle cx="5" cy="9.4" r="1.3"/><circle cx="6.6" cy="13.6" r="1.3"/><path d="M12 15.5v6.5M9.6 18h4.8"/></svg>
+    Rosary</button>
 </nav>
 <script>
 (() => {
@@ -481,20 +539,103 @@
       window.scrollTo({ top: el.getBoundingClientRect().top + scrollY - hh - 6, behavior:'smooth' }); };
   }
 
+  // ---------- Rosary ----------
+  const MYSTERIES = {
+    joyful:    { name:'Joyful', days:'Mondays & Saturdays', m:[
+      ['The Annunciation','Humility'], ['The Visitation','Love of neighbor'], ['The Nativity','Poverty'],
+      ['The Presentation in the Temple','Purity of heart and body'], ['The Finding in the Temple','Devotion to Jesus'] ]},
+    sorrowful: { name:'Sorrowful', days:'Tuesdays & Fridays', m:[
+      ['The Agony in the Garden','Obedience to God’s will'], ['The Scourging at the Pillar','Mortification'], ['The Crowning with Thorns','Courage'],
+      ['The Carrying of the Cross','Patience'], ['The Crucifixion and Death','Sorrow for our sins'] ]},
+    glorious:  { name:'Glorious', days:'Wednesdays & Sundays', m:[
+      ['The Resurrection','Faith'], ['The Ascension','Hope'], ['The Descent of the Holy Spirit','Wisdom'],
+      ['The Assumption','Devotion to Mary'], ['The Coronation of Mary','Grace of a happy death'] ]},
+    luminous:  { name:'Luminous', days:'Thursdays', m:[
+      ['The Baptism of Christ in the Jordan','Openness to the Holy Spirit'], ['The Wedding Feast at Cana','To Jesus through Mary'],
+      ['The Proclamation of the Kingdom of God','Conversion'], ['The Transfiguration','Desire for holiness'], ['The Institution of the Eucharist','Adoration'] ]}
+  };
+  const DAY_SET = ['glorious','joyful','sorrowful','glorious','luminous','sorrowful','joyful']; // Sun..Sat
+  const PRAYERS = [
+    ['Sign of the Cross','In the name of the Father, and of the Son, and of the Holy Spirit. Amen.'],
+    ['Apostles’ Creed','I believe in God,\nthe Father almighty,\nCreator of heaven and earth,\nand in Jesus Christ, his only Son, our Lord,\nwho was conceived by the Holy Spirit,\nborn of the Virgin Mary,\nsuffered under Pontius Pilate,\nwas crucified, died and was buried;\nhe descended into hell;\non the third day he rose again from the dead;\nhe ascended into heaven,\nand is seated at the right hand of God the Father almighty;\nfrom there he will come to judge the living and the dead.\nI believe in the Holy Spirit,\nthe holy catholic Church,\nthe communion of saints,\nthe forgiveness of sins,\nthe resurrection of the body,\nand life everlasting.\nAmen.'],
+    ['Our Father','Our Father, who art in heaven,\nhallowed be thy name;\nthy kingdom come,\nthy will be done\non earth as it is in heaven.\nGive us this day our daily bread,\nand forgive us our trespasses,\nas we forgive those who trespass against us;\nand lead us not into temptation,\nbut deliver us from evil.\nAmen.'],
+    ['Hail Mary','Hail, Mary, full of grace,\nthe Lord is with thee.\nBlessed art thou among women\nand blessed is the fruit of thy womb, Jesus.\nHoly Mary, Mother of God,\npray for us sinners,\nnow and at the hour of our death.\nAmen.'],
+    ['Glory Be','Glory be to the Father,\nand to the Son,\nand to the Holy Spirit,\nas it was in the beginning,\nis now, and ever shall be,\nworld without end.\nAmen.'],
+    ['Fatima Prayer','O my Jesus, forgive us our sins,\nsave us from the fires of hell;\nlead all souls to Heaven,\nespecially those who have most need of your mercy.'],
+    ['Hail, Holy Queen','Hail, Holy Queen, Mother of Mercy,\nour life, our sweetness and our hope.\nTo thee do we cry,\npoor banished children of Eve.\nTo thee do we send up our sighs,\nmourning and weeping in this valley of tears.\nTurn then, most gracious advocate,\nthine eyes of mercy toward us,\nand after this our exile\nshow unto us the blessed fruit of thy womb, Jesus.\nO clement, O loving, O sweet Virgin Mary.\n\nV. Pray for us, O holy Mother of God.\nR. That we may be made worthy of the promises of Christ.'],
+    ['Closing Prayer','Let us pray.\nO God, whose Only Begotten Son,\nby his life, Death, and Resurrection,\nhas purchased for us the rewards of eternal life,\ngrant, we beseech thee,\nthat while meditating on these mysteries\nof the most holy Rosary of the Blessed Virgin Mary,\nwe may imitate what they contain\nand obtain what they promise,\nthrough the same Christ our Lord.\nAmen.']
+  ];
+  const STEPS = [
+    ['Sign of the Cross', 'then, holding the crucifix, pray the <b>Apostles’ Creed</b>.'],
+    ['Our Father', 'on the first bead.'],
+    ['3 Hail Marys', 'one on each of the next three beads (for faith, hope and charity).'],
+    ['Glory Be', ''],
+    ['Five decades', 'for each one: announce the mystery, pray an <b>Our Father</b>, <b>10 Hail Marys</b> while meditating on it, a <b>Glory Be</b>, and the <b>Fatima Prayer</b> (optional).'],
+    ['Hail, Holy Queen', 'after the fifth decade, with its verse and response.'],
+    ['Closing Prayer', 'then end with the <b>Sign of the Cross</b>.']
+  ];
+  const BEAD_KEY = 'rosaryBeads';
+  let rosSet = null, beads = { day:'', dec:0, hm:0 };   // dec 0..5 (5 = finished), hm 0..10
+  try { const b = JSON.parse(localStorage.getItem(BEAD_KEY)); if(b && b.day === ymd(today()) && 'dec' in b) beads = b; } catch {}
+  const saveBeads = () => { beads.day = ymd(today()); try { localStorage.setItem(BEAD_KEY, JSON.stringify(beads)); } catch {} };
+  const todaySet = () => DAY_SET[today().getDay()];
+  const prayerHtml = t => t.split('\n').map(x => x ? `<span class="l">${esc(x)}</span>` : '<span class="gap"></span>').join('');
+
+  function renderRosary(){
+    const ts = todaySet(); if(!rosSet) rosSet = ts;
+    const set = MYSTERIES[rosSet], isToday = rosSet === ts;
+    $('ros-sets').innerHTML = Object.entries(MYSTERIES).map(([k,s]) =>
+      `<button data-set="${k}" aria-pressed="${k===rosSet}">${s.name}${k===ts?' <i>· Today</i>':''}</button>`).join('');
+    $('ros-myst').innerHTML = `<div class="ros-kicker">${isToday ? 'Today · ' + today().toLocaleDateString('en-US',{weekday:'long'}) : 'Prayed on ' + set.days}</div>
+      <h3>The ${set.name} Mysteries</h3>
+      <ol class="myst">${set.m.map(([n,f],i) => `<li class="${beads.dec===i && (beads.hm>0 || beads.dec>0) ? 'cur' : ''}"><span>${esc(n)}</span><small>Fruit: ${esc(f)}</small></li>`).join('')}</ol>
+      ${rosSet==='joyful' ? '<p class="ros-note">Also prayed on the Sundays of Advent.</p>' : rosSet==='sorrowful' ? '<p class="ros-note">Also prayed on the Sundays of Lent.</p>' : ''}`;
+    const { dec, hm } = beads, done = dec >= 5;
+    $('ros-counter').innerHTML = `
+      <div class="bc-head"><span>${done ? 'Rosary complete' : `Bead counter · Decade ${dec+1} of 5`}</span><button class="bc-reset" id="bc-reset">Reset</button></div>
+      <div class="bc-myst">${done ? 'Finish with the Hail, Holy Queen and Closing Prayer.' : esc(set.m[dec][0])}</div>
+      <div class="bc-beads" role="group" aria-label="Hail Mary beads">${Array.from({length:10},(_,i) =>
+        `<button class="bead${done || i < hm ? ' on' : ''}" data-i="${i}" aria-label="Hail Mary ${i+1}"${done?' disabled':''}></button>`).join('')}</div>
+      <div class="bc-dec" aria-label="Decades completed">${[0,1,2,3,4].map(i => `<span class="${i < dec || (i===dec && hm===10) ? 'on' : ''}"></span>`).join('')}</div>
+      <button class="bc-tap" id="bc-tap"${done?' disabled':''}>${done ? '✓ All five decades prayed'
+        : hm === 10 ? `Glory Be · Fatima Prayer<small>${dec < 4 ? `Tap to begin decade ${dec+2}` : 'Tap to finish'}</small>`
+        : hm === 0 ? `Our Father<small>Then tap for each Hail Mary</small>`
+        : `Hail Mary ${hm} of 10<small>Tap for the next</small>`}</button>`;
+  }
+  function tapBead(){
+    if(beads.dec >= 5) return;
+    if(beads.hm < 10) beads.hm++; else { beads.dec++; beads.hm = 0; }
+    if(navigator.vibrate) navigator.vibrate(8);
+    saveBeads(); renderRosary();
+  }
+  function wireRosary(){
+    $('ros-sets').onclick = e => { const b = e.target.closest('button'); if(!b) return; rosSet = b.dataset.set; renderRosary(); };
+    $('ros-counter').onclick = e => {
+      const t = e.target.closest('button'); if(!t) return;
+      if(t.id === 'bc-reset'){ beads = { day:'', dec:0, hm:0 }; saveBeads(); renderRosary(); return; }
+      if(t.id === 'bc-tap') return tapBead();
+      if(t.classList.contains('bead')){ beads.hm = (+t.dataset.i) + 1; saveBeads(); renderRosary(); }
+    };
+    $('ros-steps').innerHTML = STEPS.map(([a,b]) => `<li><b>${a}</b>${b ? ' — ' + b : ''}</li>`).join('');
+    $('ros-prayers').innerHTML = PRAYERS.map(([t,x]) => `<details><summary>${esc(t)}</summary><div class="prayer">${prayerHtml(x)}</div></details>`).join('');
+  }
+
   // ---------- tabs ----------
   const TAB_KEY = 'massTab';  // not "mr:" — that prefix is pruned by the readings cache
-  const scrollPos = { readings:0, parts:0 };
-  let view = 'readings', partsReady = false;
+  const VIEWS = ['readings','parts','rosary'];
+  const scrollPos = { readings:0, parts:0, rosary:0 };
+  let view = 'readings', partsReady = false, rosaryReady = false;
   function setView(v, restore){
-    if(v !== 'parts') v = 'readings';
+    if(!VIEWS.includes(v)) v = 'readings';
     if(v === view && restore === undefined) return;
     scrollPos[view] = scrollY;
     view = v;
     if(v === 'parts' && !partsReady){ renderParts(); partsReady = true; }
-    $('view-readings').hidden = v !== 'readings';
-    $('view-parts').hidden = v !== 'parts';
+    if(v === 'rosary'){ if(!rosaryReady){ wireRosary(); rosaryReady = true; } rosSet = null; renderRosary(); }
+    VIEWS.forEach(x => { $('view-'+x).hidden = x !== v; });
     document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
     if(v === 'parts') document.title = 'Mass Parts';
+    else if(v === 'rosary') document.title = 'Rosary';
     else if(current) document.title = sameDay(current, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + current.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     window.scrollTo(0, restore ? 0 : scrollPos[v]);
     try { localStorage.setItem(TAB_KEY, v); } catch {}
