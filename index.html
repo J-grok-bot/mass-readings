@@ -164,6 +164,67 @@
   .step-body .prayer{padding-bottom:6px}
   .prayer .l{display:block;padding-left:1em;text-indent:-1em}
   .lines h4{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--fg);margin:1.1em 0 .5em 40px}
+  /* confession button + sheet */
+  .conf-btn{position:fixed;z-index:4;top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 12px);width:40px;height:40px;border-radius:50%;
+       border:1px solid var(--rule);background:var(--card);color:var(--accent);display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
+  .conf-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+  .conf-btn:active{transform:scale(.94)}
+  #view-readings .nav{padding-right:48px}
+  #view-parts header .title,#view-rosary header .title{padding:0 48px}
+  html.sheet-open,html.sheet-open body{overflow:hidden}
+  .sheet{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:flex-end;justify-content:center}
+  .sheet.show{background:rgba(0,0,0,.42)}
+  .sheet-panel{background:var(--bg);width:100%;max-width:680px;height:calc(100% - env(safe-area-inset-top) - 18px);border-radius:18px 18px 0 0;display:flex;flex-direction:column;
+       transform:translateY(100%);transition:transform .22s ease-out;box-shadow:0 -6px 30px rgba(0,0,0,.18)}
+  .sheet.show .sheet-panel{transform:none}
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:16px 18px 10px 22px;border-bottom:1px solid var(--rule)}
+  .sheet-head h2{font:600 25px/1.2 var(--serif);letter-spacing:0;text-transform:none;color:var(--fg);margin:2px 0 0;padding:0;border:0}
+  .sheet-x{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:var(--card);color:var(--fg);font:400 24px/1 var(--sans);cursor:pointer;display:grid;place-items:center;padding:0 0 2px}
+  .sheet-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 22px calc(28px + env(safe-area-inset-bottom))}
+  .conf-today{border-color:var(--accent)}
+  .conf-none{margin:6px 0 0;font-size:16px;line-height:1.5}
+  .cs-list{list-style:none;margin:6px 0 0;padding:0}
+  .cs{display:flex;gap:12px;padding:10px 0;border-top:1px solid var(--rule)}
+  .cs:first-child{border-top:0}
+  .cs-t{flex:none;width:100px;font:700 13.5px/1.35 var(--sans);color:var(--fg);padding-top:2px}
+  .cs-t small{display:block;font-weight:600;font-size:11.5px;color:var(--muted)}
+  .cs-b{flex:1;min-width:0;font-size:16.5px;line-height:1.35}
+  .cs-b b{font-weight:600}
+  .cs-town{font-family:var(--sans);font-size:12.5px;color:var(--muted)}
+  .cs-tag{display:inline-block;font:700 10.5px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:20px;padding:4px 7px;margin:3px 4px 0 0;font-style:normal;vertical-align:middle}
+  .cs-sub{display:block;font:500 12.5px/1.4 var(--sans);color:var(--muted);margin-top:2px}
+  .warn{color:var(--accent)!important;font-weight:600}
+  .cs-links{display:flex;flex-wrap:wrap;gap:4px 14px;margin-top:5px;font:600 13px/1.3 var(--sans)}
+  .cs-links a{color:var(--accent);text-decoration:none;padding:3px 0}
+  .cs.mon{background:var(--card);border-left:3px solid var(--accent);padding-left:9px;margin-left:-12px;border-radius:0 8px 8px 0}
+  .cs.ended{opacity:.5}
+  .conf-wk{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:22px 0 6px}
+  .conf-wk button{width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:var(--card);color:var(--fg);font:20px/1 var(--sans);cursor:pointer;flex:none}
+  .conf-wk button:disabled{opacity:.35}
+  #conf-wk-label{flex:1;text-align:center;font:700 12.5px/1.3 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+  #conf-wk-label small{display:block;font-weight:600;letter-spacing:.04em;color:var(--muted);text-transform:none;font-size:13px;margin-top:2px}
+  .cd{border-top:1px solid var(--rule);padding:12px 0 6px}
+  .cd h4{margin:0;font:700 15px/1.3 var(--sans);color:var(--fg);display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .cd h4 span{font-weight:500;color:var(--muted)}
+  .cd h4 em{font-style:normal;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid var(--accent);color:var(--accent);border-radius:20px;padding:2px 7px}
+  .cd h4 .cs-tag{margin:0}
+  .cd.today{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:12px 12px 6px;margin:6px 0}
+  .cd.today .cs.mon{margin-left:-12px}
+  .cd.past{opacity:.55}
+  .cd-none{margin:4px 0 6px;font:500 13px var(--sans);color:var(--muted)}
+  .cm + .cm{border-top:1px solid var(--rule);margin-top:10px;padding-top:10px}
+  .cm-h{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;align-items:baseline}
+  .cm-h b{font-weight:600;font-size:17px}
+  .cm-h span{font:700 13px var(--sans);color:var(--accent)}
+  .cm-l{margin:4px 0 0;padding:0 0 0 1.1em;font-size:15.5px;line-height:1.45}
+  .conf-par details:last-child{border-bottom:1px solid var(--rule)}
+  .conf-par summary{text-transform:none;letter-spacing:0;color:var(--fg);font:600 16.5px var(--serif);justify-content:flex-start}
+  .conf-par summary span{font:500 12.5px var(--sans);color:var(--muted);margin-right:auto}
+  .cp{padding:0 0 12px;font-size:15.5px;line-height:1.45}
+  .cp p{margin:6px 0 0;font:500 13px/1.45 var(--sans);color:var(--muted)}
+  .conf-notes{margin:22px 0 0;font:500 13px/1.5 var(--sans);color:var(--muted)}
+  .conf-notes p{margin:0 0 8px}
+  .conf-notes b{color:var(--fg)}
 </style>
 </head>
 <body>
@@ -206,6 +267,29 @@
   <div class="steps" id="ros-steps"></div>
   <footer>Steps, mysteries and prayer texts follow the USCCB’s “How to Pray the Rosary.” Scripture: New American Bible, Revised Edition (NABRE), via bible.usccb.org.</footer>
 </main>
+</div>
+<button class="conf-btn" id="conf-btn" aria-label="Confession times" title="Confession times">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6v7M9.5 8.5h5"/></svg>
+</button>
+<div class="sheet" id="conf" role="dialog" aria-modal="true" aria-labelledby="conf-title" hidden>
+  <div class="sheet-panel">
+    <div class="sheet-head"><div><div class="ros-kicker">Port St. Lucie · Stuart area</div><h2 id="conf-title">Confession times</h2></div>
+      <button class="sheet-x" id="conf-close" aria-label="Close">×</button></div>
+    <div class="sheet-body" id="conf-body">
+      <div class="card conf-today" id="conf-today"></div>
+      <div class="conf-wk"><button id="conf-wk-prev" aria-label="Previous week">‹</button><div id="conf-wk-label"></div><button id="conf-wk-next" aria-label="Next week">›</button></div>
+      <div id="conf-week"></div>
+      <h3 class="ros-h">Monthly</h3>
+      <div class="card" id="conf-monthly"></div>
+      <h3 class="ros-h">Parishes</h3>
+      <div class="conf-par" id="conf-parishes"></div>
+      <div class="conf-notes">
+        <p><b>By appointment:</b> nearly every parish will also hear confessions by appointment — call the office.</p>
+        <p><b>Seasonal:</b> times change around holidays; Advent and Lent penance services vary by parish and are announced in each bulletin.</p>
+        <p><b>Always confirm:</b> times are copied from each parish’s website (tap “Source”). Last checked <span id="conf-checked"></span>.</p>
+      </div>
+    </div>
+  </div>
 </div>
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
@@ -660,6 +744,110 @@
     $('ros-steps').innerHTML = STEPS.map(([a,b,ps],i) => `<details class="step"><summary><span class="step-n">${i+1}</span><span class="step-t"><b>${a}</b><small>${b}</small></span></summary>
       <div class="step-body">${ps.map(j => `<h4>${esc(PRAYERS[j][0])}</h4><div class="prayer">${prayerHtml(PRAYERS[j][1])}</div>`).join('')}</div></details>`).join('');
   }
+
+  // ---------- confession schedule ----------
+  // Easy to update: edit CONF_PARISHES and CONF_SLOTS. Last checked against each parish's own site:
+  const CONF_CHECKED = 'Oct 31, 2026';
+  const CONF_PARISHES = {
+    sl:   { name:'St. Lucie', town:'Port St. Lucie', addr:'280 SW Prima Vista Blvd, Port St. Lucie, FL 34983', phone:'772-878-1215', src:'https://stlucie.cc/mass-confession-times', note:'Holiday schedule varies.' },
+    hf:   { name:'Holy Family', town:'Port St. Lucie', addr:'2330 SE Mariposa Ave, Port St. Lucie, FL 34952', phone:'772-335-2385', src:'https://www.holyfamilyccpsl.com/', note:'In the main church.' },
+    seas: { name:'St. Elizabeth Ann Seton', town:'Port St. Lucie', addr:'930 SW Tunis Ave, Port St. Lucie, FL 34953', phone:'772-336-0282', src:'https://seascatholicparish.org/', note:'In the chapel. Also by appointment.' },
+    sb:   { name:'St. Bernadette', town:'Port St. Lucie', addr:'350 NW California Blvd, Port St. Lucie, FL 34986', phone:'772-336-9956', src:'https://stbernadetteslw.org/about/confession-times', note:'After daily Mass, in the Msgr. Cosmo Saporito Chapel. Also by appointment.' },
+    sj:   { name:'St. Joseph', town:'Stuart', addr:'1200 SE 10th St, Stuart', phone:'772-287-2727', src:'https://sjcflorida.org/', note:'Weekdays by appointment.' },
+    sa:   { name:'St. Andrew', town:'Stuart', addr:'2100 SE Cove Rd, Stuart', phone:'772-781-4415', src:'https://saintandrewcatholic.org/', note:'Saturday: arrive by 2:00 pm. Also by appointment.' },
+    smdp: { name:'St. Martin de Porres', town:'Jensen Beach', addr:'2555 NE Savannah Rd, Jensen Beach', phone:'772-334-4214', src:'https://stmartindp.com/', note:'A seasonal (winter) Saturday 2:30–3:30 pm time is not currently listed. Also by appointment.' },
+    hr:   { name:'Holy Redeemer', town:'Palm City', addr:'1454 SW Mapp Rd, Palm City', phone:'772-286-4590', src:'https://holyredeemercc.org/', note:'Also by appointment.' },
+    sc:   { name:'St. Christopher', town:'Hobe Sound', addr:'12001 SE Federal Hwy, Hobe Sound', phone:'772-546-5150', src:'https://stchrishs.com/', note:'Website was down when checked — call to confirm. Also by appointment.', confirm:true }
+  };
+  // day: 0=Sun … 6=Sat for weekly slots; rule: 'ff' First Friday, 'fs' First Saturday, 'thff' Thursday before First Friday.
+  // m/e: start/end in minutes after midnight (e optional), t: what to show.
+  const CONF_SLOTS = [
+    { p:'sb',   day:6, m:525, e:630, t:'8:45–10:30 am' },
+    { p:'smdp', day:6, m:540, e:600, t:'9:00–10:00 am' },
+    { p:'hf',   day:6, m:600, e:660, t:'10:00–11:00 am' },
+    { p:'sj',   day:6, m:660, e:690, t:'11:00–11:30 am' },
+    { p:'sa',   day:6, m:840,        t:'From 2:00 pm', sub:'Arrive by 2:00' },
+    { p:'sl',   day:6, m:870, e:930, t:'2:30–3:30 pm' },
+    { p:'hr',   day:6, m:870, e:930, t:'2:30–3:30 pm' },
+    { p:'hf',   day:6, m:885, e:945, t:'2:45–3:45 pm' },
+    { p:'sj',   day:6, m:900, e:930, t:'3:00–3:30 pm' },
+    { p:'seas', day:6, m:900, e:960, t:'3:00–4:00 pm', sub:'Chapel' },
+    { p:'sc',   day:5, m:570, e:600, t:'~9:30–10:00 am', sub:'After 9:00 am Mass · call to confirm' },
+    { p:'sl',   rule:'ff',   m:435, e:465, t:'7:15–7:45 am' },
+    { p:'sa',   rule:'ff',   m:480,        t:'After 7:30 am Mass' },
+    { p:'sa',   rule:'fs',   m:480,        t:'After 7:30 am Mass' },
+    { p:'sj',   rule:'thff', m:900, e:930, t:'3:00–3:30 pm' }
+  ];
+  const RULES = { ff:'First Friday', fs:'First Saturday', thff:'Thursday before First Friday' };
+  const DOW = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  const isFF = d => d.getDay() === 5 && d.getDate() <= 7;
+  const ruleOn = (r, d) => r === 'ff' ? isFF(d) : r === 'fs' ? d.getDay() === 6 && d.getDate() <= 7 : r === 'thff' ? d.getDay() === 4 && isFF(addDays(d, 1)) : false;
+  const slotsOn = d => CONF_SLOTS.filter(s => s.rule ? ruleOn(s.rule, d) : s.day === d.getDay()).sort((a,b) => a.m - b.m);
+  const nextRuleDate = r => { let d = today(); for(let i = 0; i < 62; i++, d = addDays(d, 1)) if(ruleOn(r, d)) return d; return null; };
+  const fmtDay = (d, o) => d.toLocaleDateString('en-US', o || {weekday:'short', month:'short', day:'numeric'});
+  const telHref = ph => 'tel:+1' + ph.replace(/\D/g, '');
+  const mapHref = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ' Catholic Church, ' + p.addr);
+  let confWeek = 0, confReady = false;
+
+  function slotHtml(s, d){
+    const p = CONF_PARISHES[s.p], now = new Date(), isT = sameDay(d, today());
+    const ended = isT && s.e && now.getHours()*60 + now.getMinutes() >= s.e;
+    return `<li class="cs${s.rule ? ' mon' : ''}${ended ? ' ended' : ''}">
+      <div class="cs-t">${esc(s.t)}${ended ? '<small>Ended</small>' : ''}</div>
+      <div class="cs-b"><b>${esc(p.name)}</b> <span class="cs-town">${esc(p.town)}</span>
+        ${s.rule ? `<span class="cs-tag">${RULES[s.rule]}</span>` : ''}${s.sub || p.confirm ? `<span class="cs-sub${p.confirm ? ' warn' : ''}">${esc(s.sub || 'Call to confirm')}</span>` : ''}
+        <span class="cs-links"><a href="${telHref(p.phone)}" aria-label="Call ${esc(p.name)} at ${esc(p.phone)}">Call</a><a href="${mapHref(p)}" target="_blank" rel="noopener">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></span></div></li>`;
+  }
+  function renderConf(){
+    const t = today(), ts = slotsOn(t);
+    let next = null; for(let i = 1; i < 14 && !next; i++){ const d = addDays(t, i); if(slotsOn(d).length) next = d; }
+    $('conf-today').innerHTML = `<div class="ros-kicker">Today · ${fmtDay(t, {weekday:'long', month:'short', day:'numeric'})}</div>` +
+      (ts.length ? `<ul class="cs-list">${ts.map(s => slotHtml(s, t)).join('')}</ul>`
+                 : `<p class="conf-none">No scheduled confessions today${next ? ` — next on <b>${fmtDay(next, {weekday:'long', month:'short', day:'numeric'})}</b>` : ''}. Most parishes also hear confessions by appointment.</p>`);
+    // monthly
+    $('conf-monthly').innerHTML = Object.keys(RULES).map(r => {
+      const d = nextRuleDate(r), ss = CONF_SLOTS.filter(s => s.rule === r);
+      return `<div class="cm"><div class="cm-h"><b>${RULES[r]}</b><span>Next: ${d ? fmtDay(d, {weekday:'short', month:'short', day:'numeric', year:'numeric'}) : '—'}</span></div>
+        <ul class="cm-l">${ss.map(s => `<li>${esc(CONF_PARISHES[s.p].name)} <span class="cs-town">${esc(CONF_PARISHES[s.p].town)}</span> · ${esc(s.t)}</li>`).join('')}</ul></div>`;
+    }).join('');
+    // week
+    const start = addDays(t, -t.getDay() + 7*confWeek), end = addDays(start, 6);
+    $('conf-wk-label').innerHTML = `${confWeek === 0 ? 'This week' : confWeek === 1 ? 'Next week' : 'Week of'}<small>${fmtDay(start, {month:'short', day:'numeric'})} – ${fmtDay(end, {month:'short', day:'numeric'})}</small>`;
+    $('conf-wk-prev').disabled = confWeek <= 0; $('conf-wk-next').disabled = confWeek >= 8;
+    $('conf-week').innerHTML = Array.from({length:7}, (_, i) => {
+      const d = addDays(start, i), ss = slotsOn(d), isT = sameDay(d, t), past = d < t && !isT;
+      const tags = [...new Set(ss.filter(s => s.rule).map(s => RULES[s.rule]))];
+      return `<section class="cd${isT ? ' today' : ''}${past ? ' past' : ''}">
+        <h4>${DOW[d.getDay()]} <span>${fmtDay(d, {month:'short', day:'numeric'})}</span>${isT ? '<em>Today</em>' : ''}${tags.map(x => `<i class="cs-tag">${x}</i>`).join('')}</h4>
+        ${ss.length ? `<ul class="cs-list">${ss.map(s => slotHtml(s, d)).join('')}</ul>` : '<p class="cd-none">No scheduled times · by appointment</p>'}</section>`;
+    }).join('');
+    $('conf-parishes').innerHTML = Object.values(CONF_PARISHES).map(p => `<details><summary>${esc(p.name)} <span>${esc(p.town)}</span></summary>
+      <div class="cp"><div>${esc(p.addr)}</div><div class="cs-links"><a href="${telHref(p.phone)}">Call ${esc(p.phone)}</a><a href="${mapHref(p)}" target="_blank" rel="noopener">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></div>${p.note ? `<p${p.confirm ? ' class="warn"' : ''}>${esc(p.note)}</p>` : ''}</div></details>`).join('');
+    $('conf-checked').textContent = CONF_CHECKED;
+  }
+  let confLastFocus = null;
+  function openConf(){
+    if(!confReady){
+      $('conf-wk-prev').onclick = () => { if(confWeek > 0){ confWeek--; renderConf(); } };
+      $('conf-wk-next').onclick = () => { if(confWeek < 8){ confWeek++; renderConf(); } };
+      $('conf-close').onclick = closeConf;
+      $('conf').addEventListener('click', e => { if(e.target === $('conf')) closeConf(); });
+      document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('conf').hidden) closeConf(); });
+      confReady = true;
+    }
+    confWeek = 0; renderConf();
+    confLastFocus = document.activeElement;
+    $('conf').hidden = false; document.documentElement.classList.add('sheet-open');
+    $('conf-body').scrollTop = 0;
+    requestAnimationFrame(() => $('conf').classList.add('show'));
+    $('conf-close').focus({preventScroll:true});
+  }
+  function closeConf(){
+    $('conf').classList.remove('show'); document.documentElement.classList.remove('sheet-open');
+    setTimeout(() => { $('conf').hidden = true; }, 200);
+    if(confLastFocus) confLastFocus.focus({preventScroll:true});
+  }
+  $('conf-btn').onclick = openConf;
 
   // ---------- tabs ----------
   const TAB_KEY = 'massTab';  // not "mr:" — that prefix is pruned by the readings cache
