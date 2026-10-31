@@ -65,7 +65,7 @@
   .tabbar{position:fixed;left:0;right:0;bottom:0;z-index:5;display:flex;justify-content:center;
           background:var(--bg);background:color-mix(in srgb, var(--bg) 92%, transparent);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
           border-top:1px solid var(--rule);padding:0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
-  .tabbar button{appearance:none;flex:1;max-width:220px;height:var(--tabh);border:0;background:none;color:var(--muted);cursor:pointer;
+  .tabbar button{appearance:none;flex:1;min-width:0;max-width:200px;white-space:nowrap;height:var(--tabh);border:0;background:none;color:var(--muted);cursor:pointer;
           font-family:var(--sans);font-size:11px;font-weight:600;letter-spacing:.03em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;
           -webkit-tap-highlight-color:transparent}
   .tabbar svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
@@ -164,23 +164,8 @@
   .step-body .prayer{padding-bottom:6px}
   .prayer .l{display:block;padding-left:1em;text-indent:-1em}
   .lines h4{font-family:var(--sans);font-size:13px;font-weight:700;color:var(--fg);margin:1.1em 0 .5em 40px}
-  /* confession button + sheet */
-  .conf-btn{position:fixed;z-index:4;top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 12px);width:40px;height:40px;border-radius:50%;
-       border:1px solid var(--rule);background:var(--card);color:var(--accent);display:grid;place-items:center;cursor:pointer;padding:0;-webkit-tap-highlight-color:transparent}
-  .conf-btn svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-  .conf-btn:active{transform:scale(.94)}
-  #view-readings .nav{padding-right:48px}
-  #view-parts header .title,#view-rosary header .title{padding:0 48px}
-  html.sheet-open,html.sheet-open body{overflow:hidden}
-  .sheet{position:fixed;inset:0;z-index:10;background:rgba(0,0,0,0);transition:background .2s;display:flex;align-items:flex-end;justify-content:center}
-  .sheet.show{background:rgba(0,0,0,.42)}
-  .sheet-panel{background:var(--bg);width:100%;max-width:680px;height:calc(100% - env(safe-area-inset-top) - 18px);border-radius:18px 18px 0 0;display:flex;flex-direction:column;
-       transform:translateY(100%);transition:transform .22s ease-out;box-shadow:0 -6px 30px rgba(0,0,0,.18)}
-  .sheet.show .sheet-panel{transform:none}
-  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;padding:16px 18px 10px 22px;border-bottom:1px solid var(--rule)}
-  .sheet-head h2{font:600 25px/1.2 var(--serif);letter-spacing:0;text-transform:none;color:var(--fg);margin:2px 0 0;padding:0;border:0}
-  .sheet-x{flex:none;width:36px;height:36px;border-radius:50%;border:1px solid var(--rule);background:var(--card);color:var(--fg);font:400 24px/1 var(--sans);cursor:pointer;display:grid;place-items:center;padding:0 0 2px}
-  .sheet-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:4px 22px calc(28px + env(safe-area-inset-bottom))}
+  /* Confession */
+  .conf-loc{font:600 12.5px/1.4 var(--sans);color:var(--muted);text-align:center;margin:10px 0 0}
   .conf-today{border-color:var(--accent)}
   .conf-none{margin:6px 0 0;font-size:16px;line-height:1.5}
   .cs-list{list-style:none;margin:6px 0 0;padding:0}
@@ -268,15 +253,13 @@
   <footer>Steps, mysteries and prayer texts follow the USCCB’s “How to Pray the Rosary.” Scripture: New American Bible, Revised Edition (NABRE), via bible.usccb.org.</footer>
 </main>
 </div>
-<button class="conf-btn" id="conf-btn" aria-label="Confession times" title="Confession times">
-  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6v7M9.5 8.5h5"/></svg>
-</button>
-<div class="sheet" id="conf" role="dialog" aria-modal="true" aria-labelledby="conf-title" hidden>
-  <div class="sheet-panel">
-    <div class="sheet-head"><div><div class="ros-kicker">Port St. Lucie · Stuart area</div><h2 id="conf-title">Confession times</h2></div>
-      <button class="sheet-x" id="conf-close" aria-label="Close">×</button></div>
-    <div class="sheet-body" id="conf-body">
-      <div class="card conf-today" id="conf-today"></div>
+<div id="view-conf" role="tabpanel" aria-labelledby="tab-conf" hidden>
+<header>
+  <div class="title">Confession Times</div>
+</header>
+<main>
+  <p class="conf-loc">Port St. Lucie &amp; nearby · Stuart, Jensen Beach, Palm City, Hobe Sound</p>
+<div class="card conf-today" id="conf-today"></div>
       <div class="conf-wk"><button id="conf-wk-prev" aria-label="Previous week">‹</button><div id="conf-wk-label"></div><button id="conf-wk-next" aria-label="Next week">›</button></div>
       <div id="conf-week"></div>
       <h3 class="ros-h">Monthly</h3>
@@ -288,8 +271,7 @@
         <p><b>Seasonal:</b> times change around holidays; Advent and Lent penance services vary by parish and are announced in each bulletin.</p>
         <p><b>Always confirm:</b> times are copied from each parish’s website (tap “Source”). Last checked <span id="conf-checked"></span>.</p>
       </div>
-    </div>
-  </div>
+</main>
 </div>
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
@@ -301,6 +283,9 @@
   <button id="tab-rosary" role="tab" aria-selected="false" aria-controls="view-rosary" data-view="rosary">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.6" r="1.3"/><circle cx="16.6" cy="5.2" r="1.3"/><circle cx="19" cy="9.4" r="1.3"/><circle cx="17.4" cy="13.6" r="1.3"/><circle cx="7.4" cy="5.2" r="1.3"/><circle cx="5" cy="9.4" r="1.3"/><circle cx="6.6" cy="13.6" r="1.3"/><path d="M12 15.5v6.5M9.6 18h4.8"/></svg>
     Rosary</button>
+  <button id="tab-conf" role="tab" aria-selected="false" aria-controls="view-conf" data-view="conf">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6v7M9.5 8.5h5"/></svg>
+    Confession</button>
 </nav>
 <script>
 (() => {
@@ -825,34 +810,15 @@
       <div class="cp"><div>${esc(p.addr)}</div><div class="cs-links"><a href="${telHref(p.phone)}">Call ${esc(p.phone)}</a><a href="${mapHref(p)}" target="_blank" rel="noopener">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></div>${p.note ? `<p${p.confirm ? ' class="warn"' : ''}>${esc(p.note)}</p>` : ''}</div></details>`).join('');
     $('conf-checked').textContent = CONF_CHECKED;
   }
-  let confLastFocus = null;
-  function openConf(){
-    if(!confReady){
-      $('conf-wk-prev').onclick = () => { if(confWeek > 0){ confWeek--; renderConf(); } };
-      $('conf-wk-next').onclick = () => { if(confWeek < 8){ confWeek++; renderConf(); } };
-      $('conf-close').onclick = closeConf;
-      $('conf').addEventListener('click', e => { if(e.target === $('conf')) closeConf(); });
-      document.addEventListener('keydown', e => { if(e.key === 'Escape' && !$('conf').hidden) closeConf(); });
-      confReady = true;
-    }
-    confWeek = 0; renderConf();
-    confLastFocus = document.activeElement;
-    $('conf').hidden = false; document.documentElement.classList.add('sheet-open');
-    $('conf-body').scrollTop = 0;
-    requestAnimationFrame(() => $('conf').classList.add('show'));
-    $('conf-close').focus({preventScroll:true});
+  function wireConf(){
+    $('conf-wk-prev').onclick = () => { if(confWeek > 0){ confWeek--; renderConf(); } };
+    $('conf-wk-next').onclick = () => { if(confWeek < 8){ confWeek++; renderConf(); } };
   }
-  function closeConf(){
-    $('conf').classList.remove('show'); document.documentElement.classList.remove('sheet-open');
-    setTimeout(() => { $('conf').hidden = true; }, 200);
-    if(confLastFocus) confLastFocus.focus({preventScroll:true});
-  }
-  $('conf-btn').onclick = openConf;
 
   // ---------- tabs ----------
   const TAB_KEY = 'massTab';  // not "mr:" — that prefix is pruned by the readings cache
-  const VIEWS = ['readings','parts','rosary'];
-  const scrollPos = { readings:0, parts:0, rosary:0 };
+  const VIEWS = ['readings','parts','rosary','conf'];
+  const scrollPos = { readings:0, parts:0, rosary:0, conf:0 };
   let view = 'readings', partsReady = false, rosaryReady = false;
   function setView(v, restore){
     if(!VIEWS.includes(v)) v = 'readings';
@@ -860,11 +826,13 @@
     scrollPos[view] = scrollY;
     view = v;
     if(v === 'parts' && !partsReady){ renderParts(); partsReady = true; }
+    if(v === 'conf'){ if(!confReady){ wireConf(); confReady = true; } confWeek = 0; renderConf(); }
     if(v === 'rosary'){ if(!rosaryReady){ wireRosary(); rosaryReady = true; } rosSet = null; renderRosary(); }
     VIEWS.forEach(x => { $('view-'+x).hidden = x !== v; });
     document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
     if(v === 'parts') document.title = 'Mass Parts';
     else if(v === 'rosary') document.title = 'Rosary';
+    else if(v === 'conf') document.title = 'Confession Times';
     else if(current) document.title = sameDay(current, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + current.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     window.scrollTo(0, restore ? 0 : scrollPos[v]);
     try { localStorage.setItem(TAB_KEY, v); } catch {}
