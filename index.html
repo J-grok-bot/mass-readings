@@ -771,7 +771,7 @@
   const nextRuleDate = r => { let d = today(); for(let i = 0; i < 62; i++, d = addDays(d, 1)) if(ruleOn(r, d)) return d; return null; };
   const fmtDay = (d, o) => d.toLocaleDateString('en-US', o || {weekday:'short', month:'short', day:'numeric'});
   const telHref = ph => 'tel:+1' + ph.replace(/\D/g, '');
-  const mapHref = p => 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.name + ' Catholic Church, ' + p.addr);
+  const mapHref = p => 'https://maps.apple.com/?q=' + encodeURIComponent(p.name + ' Catholic Church') + '&address=' + encodeURIComponent(p.addr);
   let confWeek = 0, confReady = false;
 
   function slotHtml(s, d){
@@ -781,7 +781,7 @@
       <div class="cs-t">${esc(s.t)}${ended ? '<small>Ended</small>' : ''}</div>
       <div class="cs-b"><b>${esc(p.name)}</b> <span class="cs-town">${esc(p.town)}</span>
         ${s.rule ? `<span class="cs-tag">${RULES[s.rule]}</span>` : ''}${s.sub || p.confirm ? `<span class="cs-sub${p.confirm ? ' warn' : ''}">${esc(s.sub || 'Call to confirm')}</span>` : ''}
-        <span class="cs-links"><a href="${telHref(p.phone)}" aria-label="Call ${esc(p.name)} at ${esc(p.phone)}">Call</a><a href="${mapHref(p)}" target="_blank" rel="noopener">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></span></div></li>`;
+        <span class="cs-links"><a href="${telHref(p.phone)}" aria-label="Call ${esc(p.name)} at ${esc(p.phone)}">Call</a><a href="${mapHref(p)}">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></span></div></li>`;
   }
   function renderConf(){
     const t = today(), ts = slotsOn(t);
@@ -807,7 +807,7 @@
         ${ss.length ? `<ul class="cs-list">${ss.map(s => slotHtml(s, d)).join('')}</ul>` : '<p class="cd-none">No scheduled times · by appointment</p>'}</section>`;
     }).join('');
     $('conf-parishes').innerHTML = Object.values(CONF_PARISHES).map(p => `<details><summary>${esc(p.name)} <span>${esc(p.town)}</span></summary>
-      <div class="cp"><div>${esc(p.addr)}</div><div class="cs-links"><a href="${telHref(p.phone)}">Call ${esc(p.phone)}</a><a href="${mapHref(p)}" target="_blank" rel="noopener">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></div>${p.note ? `<p${p.confirm ? ' class="warn"' : ''}>${esc(p.note)}</p>` : ''}</div></details>`).join('');
+      <div class="cp"><div>${esc(p.addr)}</div><div class="cs-links"><a href="${telHref(p.phone)}">Call ${esc(p.phone)}</a><a href="${mapHref(p)}">Map</a><a href="${esc(p.src)}" target="_blank" rel="noopener">Source</a></div>${p.note ? `<p${p.confirm ? ' class="warn"' : ''}>${esc(p.note)}</p>` : ''}</div></details>`).join('');
     $('conf-checked').textContent = CONF_CHECKED;
   }
   function wireConf(){
