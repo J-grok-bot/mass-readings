@@ -212,7 +212,7 @@
   .conf-notes b{color:var(--fg)}
   .conf-other{display:block;margin:18px 0 8px;padding:13px 16px;border-radius:12px;background:var(--accent);color:#fff;text-align:center;font:600 15px/1.2 var(--sans);text-decoration:none}
   .conf-other small{display:block;margin-top:4px;font-weight:500;font-size:12px;opacity:.85}
-  /* Menu (4th tab) */
+  /* Other (4th tab) */
   .menu-list{margin:18px 0 0;display:flex;flex-direction:column;gap:12px}
   .menu-item{appearance:none;display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--rule);
        border-radius:14px;padding:14px 16px;color:var(--fg);font:inherit;-webkit-tap-highlight-color:transparent}
@@ -262,6 +262,46 @@
   .cb-feast,.cb-comm,.cb-abst{color:var(--fg);border-color:var(--muted)}
   .ci-x{font:500 12.5px/1.45 var(--sans);color:var(--muted);margin-top:4px}
   .cal-now .ci-list{margin-top:10px}
+  /* Calendar month view */
+  .cal-mnav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:22px 0 6px}
+  .cal-mnav > button{appearance:none;flex:none;width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--card);color:var(--accent);display:grid;place-items:center;cursor:pointer}
+  .cal-mnav > button:disabled{opacity:.35}
+  .cal-mnav svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  .cal-mlabel{position:relative;display:flex;align-items:center;gap:4px;font-size:21px;font-weight:600;color:var(--fg);padding:6px 10px;border-radius:10px;cursor:pointer}
+  .cal-mlabel svg{width:18px;height:18px;color:var(--muted)}
+  .cal-mlabel select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
+  .cal-today{display:block;margin:0 auto 6px;appearance:none;border:0;background:none;color:var(--accent);font:600 13px var(--sans);cursor:pointer;padding:4px 8px}
+  .cal-today[hidden]{display:none}
+  .cal-grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px}
+  .cg-w{text-align:center;font:700 11px var(--sans);letter-spacing:.06em;color:var(--muted);padding:4px 0}
+  .cg-d{appearance:none;position:relative;aspect-ratio:1/1.08;min-height:42px;border:1px solid var(--rule);border-radius:9px;background:var(--card);color:var(--fg);
+       padding:0;cursor:pointer;overflow:hidden;font:inherit;-webkit-tap-highlight-color:transparent}
+  .cg-n{position:absolute;top:5px;left:0;right:0;text-align:center;font:600 15px/1 var(--sans)}
+  .cg-d.sun .cg-n{color:var(--accent)}
+  .cg-d.sol .cg-n{font-weight:800}
+  .cg-mk{position:absolute;left:0;right:0;bottom:9px;display:flex;justify-content:center;gap:3px}
+  .cg-c{position:absolute;left:5px;right:5px;bottom:3px;height:4px;border-radius:3px;border:1px solid rgba(127,127,127,.35)}
+  .cg-c.lc-green{background:#3d8b4f}.cg-c.lc-violet{background:#6a3d9a}.cg-c.lc-rose{background:#e08aa8}.cg-c.lc-red{background:#b3261e}.cg-c.lc-white{background:#fff}
+  .cg-d.today{border:2px solid var(--accent)}
+  .cg-d.sel{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .cg-d.sel .cg-n{color:var(--bg)}
+  .cg-d.today.sel{box-shadow:inset 0 0 0 2px var(--bg)}
+  .cg-d.sel .mk-hdo{background:var(--bg)}
+  .cg-d.sel .mk-fast{background:var(--bg);border-color:var(--bg)}
+  .cg-d.sel .mk-abst{border-color:var(--bg)}
+  .mk{display:inline-block;width:7px;height:7px;flex:none}
+  .mk-hdo{border-radius:50%;background:var(--accent)}
+  .mk-fast{transform:rotate(45deg);background:var(--fg);border:1.5px solid var(--fg);width:6px;height:6px}
+  .mk-abst{transform:rotate(45deg);border:1.5px solid var(--fg);width:6px;height:6px}
+  .mk-today{display:inline-block;width:12px;height:12px;border:2px solid var(--accent);border-radius:4px}
+  .cal-legend{display:flex;flex-wrap:wrap;gap:6px 14px;margin:10px 0 0;font:500 12px/1.4 var(--sans);color:var(--muted)}
+  .cal-legend span{display:inline-flex;align-items:center;gap:5px}
+  .cal-legend .lc{margin:0 -2px 0 0;width:10px;height:10px}
+  .cal-sel{margin-top:16px}
+  .cal-sel[hidden]{display:none}
+  .cal-sel-s{display:flex;align-items:center;font:500 13px var(--sans);color:var(--muted);margin-top:6px}
+  .cal-sel .ci-list{margin-top:10px}
+  .cday[data-d]{cursor:pointer}
 </style>
 </head>
 <body>
@@ -307,7 +347,7 @@
 </div>
 <div id="view-more" role="tabpanel" aria-labelledby="tab-more" hidden>
 <header>
-  <div class="title">More</div>
+  <div class="title">Other</div>
 </header>
 <main>
   <div class="menu-list">
@@ -322,7 +362,7 @@
 </div>
 <div id="view-conf" role="tabpanel" aria-labelledby="tab-more" hidden>
 <header>
-  <div class="subnav"><button class="back-menu" aria-label="Back to menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Menu</span></button><div class="title">Confession Times</div><span class="subnav-sp"></span></div>
+  <div class="subnav"><button class="back-menu" aria-label="Back to Other"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Other</span></button><div class="title">Confession Times</div><span class="subnav-sp"></span></div>
 </header>
 <main>
   <p class="conf-loc">Port St. Lucie &amp; nearby · Stuart, Jensen Beach, Palm City, Hobe Sound</p>
@@ -343,11 +383,28 @@
 </div>
 <div id="view-cal" role="tabpanel" aria-labelledby="tab-more" hidden>
 <header>
-  <div class="subnav"><button class="back-menu" aria-label="Back to menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Menu</span></button><div class="title">Catholic Calendar</div><span class="subnav-sp"></span></div>
+  <div class="subnav"><button class="back-menu" aria-label="Back to Other"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Other</span></button><div class="title">Catholic Calendar</div><span class="subnav-sp"></span></div>
 </header>
 <main>
   <p class="conf-loc">United States · Latin rite · USCCB calendar</p>
   <div class="card cal-now" id="cal-now"></div>
+  <div class="cal-mnav">
+    <button id="cal-prev" aria-label="Previous month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <label class="cal-mlabel"><span id="cal-mtext"></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 10l5 5 5-5"/></svg>
+      <select id="cal-msel" aria-label="Jump to month"></select></label>
+    <button id="cal-next" aria-label="Next month"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+  </div>
+  <button class="cal-today" id="cal-today" hidden>Back to today</button>
+  <div class="cal-grid" id="cal-grid" role="grid" aria-label="Month"></div>
+  <div class="cal-legend" aria-label="Legend">
+    <span><i class="lc lc-green"></i><i class="lc lc-violet"></i><i class="lc lc-rose"></i><i class="lc lc-red"></i><i class="lc lc-white"></i>Liturgical color</span>
+    <span><i class="mk mk-hdo"></i>Holy day of obligation</span>
+    <span><i class="mk mk-fast"></i>Fast</span>
+    <span><i class="mk mk-abst"></i>Abstinence</span>
+    <span><i class="mk-today"></i>Today</span>
+  </div>
+  <div class="card cal-sel" id="cal-sel" aria-live="polite"></div>
+  <h3 class="ros-h cal-m" id="cal-lh"></h3>
   <div class="cal-filter" id="cal-filter" role="group" aria-label="Show">
     <button data-f="all" aria-pressed="true">Everything</button><button data-f="major" aria-pressed="false">Holy days &amp; feasts</button><button data-f="fast" aria-pressed="false">Fasting</button>
   </div>
@@ -372,7 +429,7 @@
     Rosary</button>
   <button id="tab-more" role="tab" aria-selected="false" aria-controls="view-more" data-view="more">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M4.5 12h15M4.5 17h15"/></svg>
-    Menu</button>
+    Other</button>
 </nav>
 <script>
 (() => {
@@ -1050,9 +1107,20 @@
     if(d <= pent) return s('Easter', sameDay(d, pent) ? 'red' : 'white');
     return s('Ordinary Time', 'green');
   }
+  // Liturgical color of a fixed celebration (feasts of apostles/martyrs are red; most others white)
+  function calFixedColor(e){
+    if(/^All Souls/.test(e.name)) return 'violet';
+    if(/Conversion of St\. Paul|Chair of St\. Peter|St\. John, Apostle/.test(e.name)) return 'white';
+    if(/Apostle|Evangelist|Martyr|Lawrence|Innocents|Brébeuf|Holy Cross|Matthias/.test(e.name)) return 'red';
+    return 'white';
+  }
   function calEvents(from, to){
     const out = [];
     for(let Y = from.getFullYear(); Y <= to.getFullYear(); Y++) out.push(...calYear(Y));
+    for(const e of out) if(!e.color && e.kinds.some(k => ['sol','feast','comm','mem'].includes(k))){
+      const s = calSeason(e.d);
+      e.color = (e.kinds.includes('mem') && /^Lent/.test(s.name)) ? '' : calFixedColor(e);
+    }
     return out.filter(e => e.d >= from && e.d <= to).sort((a, b) => a.d - b.d || calRank(a) - calRank(b));
   }
   function calRank(e){ const o = ['hdo','sol','fast','comm','feast','season','mem','abst','obs','holiday','first']; return Math.min(...e.kinds.map(k => o.indexOf(k))); }
@@ -1064,6 +1132,75 @@
   const calRel = (d, t) => { const n = Math.round((d - t) / 864e5); return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : `in ${n} days`; };
   const calItem = e => `<li class="ci${e.kinds.includes('hdo') ? ' hdo' : ''}"><div class="ci-n">${calDot(e.color)}${esc(e.name)}</div>
       <div class="ci-b">${e.kinds.map(k => `<span class="cb cb-${k}">${CAL_BADGE[k]}</span>`).join('')}</div>${e.note ? `<div class="ci-x">${esc(e.note)}</div>` : ''}</li>`;
+  // ----- month view -----
+  const CAL_SPAN = { back: 3, fwd: 10 };   // years shown in the month picker (dates are computed for any year)
+  let calMonth = null, calSelDay = null;
+  const calDayColor = (d, evs) => {
+    const c = evs.filter(e => e.color && !e.kinds.includes('first') && e.name !== 'Ordinary Time begins')
+      .sort((a, b) => calRank(a) - calRank(b))[0];
+    return c ? c.color : calSeason(d).color;
+  };
+  function renderMonth(){
+    const t = today();
+    if(!calMonth) calMonth = new Date(t.getFullYear(), t.getMonth(), 1, 12);
+    if(!calSelDay) calSelDay = t;
+    const Y = calMonth.getFullYear(), M = calMonth.getMonth();
+    const first = new Date(Y, M, 1, 12), last = new Date(Y, M + 1, 0, 12);
+    const evs = calEvents(first, last);
+    const byDay = d => evs.filter(e => sameDay(e.d, d));
+    const minY = t.getFullYear() - CAL_SPAN.back, maxY = t.getFullYear() + CAL_SPAN.fwd;
+    $('cal-mtext').textContent = first.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+    $('cal-prev').disabled = Y === minY && M === 0;
+    $('cal-next').disabled = Y === maxY && M === 11;
+    const sel = $('cal-msel');
+    if(!sel.options.length){
+      let o = '';
+      for(let y = minY; y <= maxY; y++) for(let m = 0; m < 12; m++)
+        o += `<option value="${y}-${m}">${new Date(y, m, 1, 12).toLocaleDateString('en-US', { month:'long', year:'numeric' })}</option>`;
+      sel.innerHTML = o;
+    }
+    sel.value = `${Y}-${M}`;
+    $('cal-today').hidden = Y === t.getFullYear() && M === t.getMonth() && sameDay(calSelDay, t);
+    let g = ['S','M','T','W','T','F','S'].map((w, i) => `<div class="cg-w" role="columnheader" aria-label="${['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][i]}">${w}</div>`).join('');
+    for(let i = 0; i < first.getDay(); i++) g += '<div class="cg-x"></div>';
+    for(let n = 1; n <= last.getDate(); n++){
+      const d = new Date(Y, M, n, 12), de = byDay(d), col = calDayColor(d, de);
+      const hdo = de.some(e => e.kinds.includes('hdo')), fast = de.some(e => e.kinds.includes('fast')), abst = de.some(e => e.kinds.includes('abst'));
+      const big = de.some(e => e.kinds.includes('sol'));
+      const label = [d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric' }), ...de.filter(e => !e.kinds.includes('first')).map(e => e.name), hdo ? 'holy day of obligation' : '', fast ? 'fast and abstinence' : abst ? 'abstinence' : ''].filter(Boolean).join(', ');
+      g += `<button class="cg-d${sameDay(d, t) ? ' today' : ''}${sameDay(d, calSelDay) ? ' sel' : ''}${big ? ' sol' : ''}${d.getDay() === 0 ? ' sun' : ''}" data-d="${n}" aria-label="${esc(label)}" aria-pressed="${sameDay(d, calSelDay)}">
+        <span class="cg-n">${n}</span><span class="cg-mk">${hdo ? '<i class="mk mk-hdo"></i>' : ''}${fast ? '<i class="mk mk-fast"></i>' : abst ? '<i class="mk mk-abst"></i>' : ''}</span><span class="cg-c lc-${col}"></span></button>`;
+    }
+    $('cal-grid').innerHTML = g;
+    // selected day details
+    const sd = calSelDay, inMonth = sd.getFullYear() === Y && sd.getMonth() === M;
+    if(inMonth){
+      const de = byDay(sd), s = calSeason(sd), col = calDayColor(sd, de);
+      $('cal-sel').innerHTML = `<div class="ros-kicker">${sameDay(sd, t) ? 'Today · ' : ''}${sd.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })}</div>
+        <div class="cal-sel-s">${calDot(col)}${esc(s.name)} · ${col}</div>
+        ${de.length ? `<ul class="ci-list">${de.map(calItem).join('')}</ul>` : `<p class="ci-x">${sd.getDay() === 0 ? 'Sunday Mass (obligation).' : 'Weekday — no feast or memorial in this list.'}</p>`}`;
+      $('cal-sel').hidden = false;
+    } else $('cal-sel').hidden = true;
+    // month list
+    document.querySelectorAll('#cal-filter button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === calFilter)));
+    $('cal-lh').textContent = `All of ${first.toLocaleDateString('en-US', { month:'long' })}`;
+    const keep = CAL_FILTERS[calFilter];
+    const list = evs.filter(e => !keep || e.kinds.some(k => keep.includes(k)));
+    let html = '', day = null, items = [];
+    const flush = () => { if(!day) return;
+      const isT = sameDay(day, t), isS = sameDay(day, sd);
+      html += `<div class="cday${isT ? ' today' : ''}${isS && !isT ? ' next' : ''}" data-d="${day.getDate()}"><div class="cday-d"><small>${day.toLocaleDateString('en-US', { weekday:'short' })}</small><b>${day.getDate()}</b>${isT ? '<em>Today</em>' : ''}</div><ul class="ci-list">${items.map(calItem).join('')}</ul></div>`;
+      items = []; };
+    for(const e of list){ if(!day || !sameDay(day, e.d)){ flush(); day = e.d; } items.push(e); }
+    flush();
+    $('cal-list').innerHTML = html || '<p class="ci-x">Nothing to show for this filter this month.</p>';
+  }
+  function calGo(dm){
+    const t = today(), n = new Date(calMonth.getFullYear(), calMonth.getMonth() + dm, 1, 12);
+    calMonth = n;
+    calSelDay = (n.getFullYear() === t.getFullYear() && n.getMonth() === t.getMonth()) ? t : n;
+    renderMonth();
+  }
   function renderCal(){
     const t = today(), end = new Date(t.getFullYear() + 1, 11, 31, 12);
     const all = calEvents(t, end), season = calSeason(t);
@@ -1080,26 +1217,20 @@
         ${nextHdo.d.getDay() === 0 ? '<div class="ci-x">Falls on a Sunday — the Sunday Mass fulfills it.</div>' : '<div class="ci-x">Vigil Masses the evening before also count.</div>'}</div>` : ''}
       ${nextFast ? `<div class="cal-next"><div class="cal-next-k">Next day of fasting</div><div class="cal-next-n">${esc(nextFast.name)}</div>
         <div class="cal-next-d">${nextFast.d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })} · <b>${calRel(nextFast.d, t)}</b></div></div>` : ''}`;
-    document.querySelectorAll('#cal-filter button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === calFilter)));
-    const keep = CAL_FILTERS[calFilter];
-    const list = all.filter(e => !keep || e.kinds.some(k => keep.includes(k)));
-    let html = '', month = '', day = null, items = [];
-    const flush = () => { if(!day) return;
-      const isT = sameDay(day, t), nx = nextHdo && sameDay(day, nextHdo.d);
-      html += `<div class="cday${isT ? ' today' : ''}${nx ? ' next' : ''}"><div class="cday-d"><small>${day.toLocaleDateString('en-US', { weekday:'short' })}</small><b>${day.getDate()}</b>${isT ? '<em>Today</em>' : ''}</div><ul class="ci-list">${items.map(calItem).join('')}</ul></div>`;
-      items = []; };
-    for(const e of list){
-      const m = e.d.toLocaleDateString('en-US', { month:'long', year:'numeric' });
-      if(!day || !sameDay(day, e.d)){ flush(); day = e.d; }
-      if(m !== month){ html += `<h3 class="ros-h cal-m">${m}</h3>`; month = m; }
-      items.push(e);
-    }
-    flush();
-    $('cal-list').innerHTML = html || '<p class="cd-none">Nothing in this range.</p>';
+    renderMonth();
     $('cal-checked').textContent = CAL_CHECKED;
   }
   function wireCal(){
-    $('cal-filter').onclick = e => { const b = e.target.closest('button'); if(!b) return; calFilter = b.dataset.f; renderCal(); };
+    $('cal-filter').onclick = e => { const b = e.target.closest('button'); if(!b) return; calFilter = b.dataset.f; renderMonth(); };
+    $('cal-prev').onclick = () => calGo(-1);
+    $('cal-next').onclick = () => calGo(1);
+    $('cal-msel').onchange = e => { const [y, m] = e.target.value.split('-').map(Number); calMonth = new Date(y, m, 1, 12); calGo(0); };
+    $('cal-today').onclick = () => { calMonth = null; calSelDay = null; renderMonth(); };
+    $('cal-grid').onclick = e => { const b = e.target.closest('[data-d]'); if(!b) return;
+      calSelDay = new Date(calMonth.getFullYear(), calMonth.getMonth(), +b.dataset.d, 12); renderMonth(); };
+    $('cal-list').onclick = e => { const r = e.target.closest('.cday[data-d]'); if(!r) return;
+      calSelDay = new Date(calMonth.getFullYear(), calMonth.getMonth(), +r.dataset.d, 12); renderMonth();
+      $('cal-grid').scrollIntoView({ behavior:'smooth', block:'center' }); };
   }
 
   // ---------- More menu ----------
@@ -1129,7 +1260,7 @@
     else if(v === 'rosary') document.title = 'Rosary';
     else if(v === 'conf') document.title = 'Confession Times';
     else if(v === 'cal') document.title = 'Catholic Calendar';
-    else if(v === 'more') document.title = 'Menu';
+    else if(v === 'more') document.title = 'Other';
     else if(current) document.title = sameDay(current, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + current.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     window.scrollTo(0, restore ? 0 : scrollPos[v]);
     try { localStorage.setItem(TAB_KEY, v); } catch {}
