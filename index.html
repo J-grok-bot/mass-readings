@@ -212,6 +212,56 @@
   .conf-notes b{color:var(--fg)}
   .conf-other{display:block;margin:18px 0 8px;padding:13px 16px;border-radius:12px;background:var(--accent);color:#fff;text-align:center;font:600 15px/1.2 var(--sans);text-decoration:none}
   .conf-other small{display:block;margin-top:4px;font-weight:500;font-size:12px;opacity:.85}
+  /* Menu (4th tab) */
+  .menu-list{margin:18px 0 0;display:flex;flex-direction:column;gap:12px}
+  .menu-item{appearance:none;display:flex;align-items:center;gap:14px;width:100%;text-align:left;cursor:pointer;background:var(--card);border:1px solid var(--rule);
+       border-radius:14px;padding:14px 16px;color:var(--fg);font:inherit;-webkit-tap-highlight-color:transparent}
+  .menu-item:active{transform:scale(.985)}
+  .mi-ic{flex:none;width:44px;height:44px;border-radius:12px;display:grid;place-items:center;color:var(--accent);background:color-mix(in srgb, var(--accent) 12%, transparent)}
+  .mi-ic svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .mi-t{flex:1;min-width:0;display:flex;flex-direction:column}
+  .mi-t b{font-weight:600;font-size:19px;line-height:1.3}
+  .mi-t small{font:500 13px/1.4 var(--sans);color:var(--muted)}
+  .mi-ch{flex:none;font:400 26px/1 var(--sans);color:var(--muted)}
+  .subnav{display:flex;align-items:center;gap:8px;max-width:640px;margin:0 auto}
+  .subnav .title{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .back-menu,.subnav-sp{flex:none;width:76px}
+  .back-menu{appearance:none;display:flex;align-items:center;gap:2px;height:36px;padding:0 10px 0 4px;border:1px solid var(--rule);border-radius:18px;background:var(--card);
+       color:var(--accent);font:600 13px var(--sans);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .back-menu svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+  /* Catholic Calendar */
+  .lc{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:7px;vertical-align:1px;border:1px solid rgba(127,127,127,.45);flex:none}
+  .lc-green{background:#3d8b4f}.lc-violet{background:#6a3d9a}.lc-rose{background:#e08aa8}.lc-red{background:#b3261e}.lc-white{background:#fff}.lc-black{background:#111}
+  .cal-season{display:flex;align-items:baseline;flex-wrap:wrap;gap:0 10px;margin:8px 0 2px}
+  .cal-season .lc{margin-right:-4px;width:13px;height:13px}
+  .cal-season b{font-size:24px;font-weight:600;line-height:1.25}
+  .cal-season span{font:500 13px var(--sans);color:var(--muted)}
+  .cal-next{border-top:1px solid var(--rule);margin-top:12px;padding-top:12px}
+  .cal-next-k{font:700 11.5px var(--sans);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  .cal-next-n{font-size:20px;font-weight:600;line-height:1.3;margin-top:2px}
+  .cal-next-d{font:500 14px/1.4 var(--sans);color:var(--fg)}
+  .cal-next-d b{color:var(--accent)}
+  .cal-filter{display:flex;gap:6px;margin:18px 0 0;overflow-x:auto;scrollbar-width:none}
+  .cal-filter button{flex:none;appearance:none;border:1px solid var(--rule);background:var(--card);color:var(--fg);border-radius:18px;padding:7px 13px;font:600 13px var(--sans);cursor:pointer}
+  .cal-filter button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .cal-m{margin-top:24px}
+  .cday{display:flex;gap:12px;border-top:1px solid var(--rule);padding:10px 0}
+  .cal-m + .cday{border-top:0}
+  .cday-d{flex:none;width:42px;text-align:center;font-family:var(--sans);line-height:1.1;padding-top:3px}
+  .cday-d small{display:block;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .cday-d b{display:block;font-size:22px;font-weight:600;color:var(--fg)}
+  .cday-d em{display:block;font-style:normal;font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin-top:2px}
+  .cday.today,.cday.next{background:var(--card);border:1px solid var(--accent);border-radius:12px;padding:10px 10px 10px 4px;margin:4px 0}
+  .ci-list{list-style:none;margin:0;padding:0;flex:1;min-width:0}
+  .ci + .ci{margin-top:10px}
+  .ci-n{font-size:17px;line-height:1.3;font-weight:600}
+  .ci-b{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+  .cb{font:700 10px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;border-radius:20px;padding:4px 7px;border:1.5px solid var(--rule);color:var(--muted)}
+  .cb-hdo{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+  .cb-sol,.cb-fast{border-color:var(--accent);color:var(--accent)}
+  .cb-feast,.cb-comm,.cb-abst{color:var(--fg);border-color:var(--muted)}
+  .ci-x{font:500 12.5px/1.45 var(--sans);color:var(--muted);margin-top:4px}
+  .cal-now .ci-list{margin-top:10px}
 </style>
 </head>
 <body>
@@ -255,9 +305,24 @@
   <footer>Steps, mysteries and prayer texts follow the USCCB’s “How to Pray the Rosary.” Scripture: New American Bible, Revised Edition (NABRE), via bible.usccb.org.</footer>
 </main>
 </div>
-<div id="view-conf" role="tabpanel" aria-labelledby="tab-conf" hidden>
+<div id="view-more" role="tabpanel" aria-labelledby="tab-more" hidden>
 <header>
-  <div class="title">Confession Times</div>
+  <div class="title">More</div>
+</header>
+<main>
+  <div class="menu-list">
+    <button class="menu-item" data-go="conf">
+      <span class="mi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6v7M9.5 8.5h5"/></svg></span>
+      <span class="mi-t"><b>Confession</b><small>Weekly times around Port St. Lucie</small></span><span class="mi-ch" aria-hidden="true">›</span></button>
+    <button class="menu-item" data-go="cal">
+      <span class="mi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="5" width="17" height="15.5" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4M12 12.5v6M9.8 14.6h4.4"/></svg></span>
+      <span class="mi-t"><b>Catholic Calendar</b><small>Holy days, seasons, feasts &amp; fasts</small></span><span class="mi-ch" aria-hidden="true">›</span></button>
+  </div>
+</main>
+</div>
+<div id="view-conf" role="tabpanel" aria-labelledby="tab-more" hidden>
+<header>
+  <div class="subnav"><button class="back-menu" aria-label="Back to menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Menu</span></button><div class="title">Confession Times</div><span class="subnav-sp"></span></div>
 </header>
 <main>
   <p class="conf-loc">Port St. Lucie &amp; nearby · Stuart, Jensen Beach, Palm City, Hobe Sound</p>
@@ -276,6 +341,25 @@
       <a class="conf-other" href="https://apps.apple.com/app/id789923520">Different location<small>Find confession times anywhere in Catholic Mass Times</small></a>
 </main>
 </div>
+<div id="view-cal" role="tabpanel" aria-labelledby="tab-more" hidden>
+<header>
+  <div class="subnav"><button class="back-menu" aria-label="Back to menu"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg><span>Menu</span></button><div class="title">Catholic Calendar</div><span class="subnav-sp"></span></div>
+</header>
+<main>
+  <p class="conf-loc">United States · Latin rite · USCCB calendar</p>
+  <div class="card cal-now" id="cal-now"></div>
+  <div class="cal-filter" id="cal-filter" role="group" aria-label="Show">
+    <button data-f="all" aria-pressed="true">Everything</button><button data-f="major" aria-pressed="false">Holy days &amp; feasts</button><button data-f="fast" aria-pressed="false">Fasting</button>
+  </div>
+  <div id="cal-list"></div>
+  <div class="conf-notes">
+    <p><b>Holy days of obligation (US):</b> Jan 1, Aug 15, Nov 1, Dec 8 and Dec 25, plus every Sunday. When Jan 1, Aug 15 or Nov 1 falls on a Saturday or Monday, the obligation is lifted. The Immaculate Conception (patronal feast of the USA) always binds; if Dec 8 is a Sunday it moves to Monday and the obligation moves with it.</p>
+    <p><b>Ascension:</b> in Florida (Province of Miami) and most of the US it is celebrated on the following Sunday; Boston, Hartford, New York, Omaha and Philadelphia keep Thursday as a holy day.</p>
+    <p><b>Fasting &amp; abstinence:</b> Ash Wednesday and Good Friday are days of fasting (ages 18–59: one full meal, two smaller meals) and abstinence from meat (age 14+). Every Friday of Lent is a day of abstinence. Every Friday of the year is a day of penance.</p>
+    <p><b>Sources:</b> USCCB Liturgical Calendar for the Dioceses of the USA (2026 &amp; 2027), USCCB complementary norm to canon 1246, USCCB “Fast &amp; Abstinence.” Movable dates are calculated from the date of Easter. Diocesan and parish feasts aren’t included. Last checked <span id="cal-checked"></span>.</p>
+  </div>
+</main>
+</div>
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 6.5C10 5 7 4.5 3.5 4.8v13c3.5-.3 6.5.2 8.5 1.7 2-1.5 5-2 8.5-1.7v-13C17 4.5 14 5 12 6.5z"/><path d="M12 6.5v13"/></svg>
@@ -286,9 +370,9 @@
   <button id="tab-rosary" role="tab" aria-selected="false" aria-controls="view-rosary" data-view="rosary">
     <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="3.6" r="1.3"/><circle cx="16.6" cy="5.2" r="1.3"/><circle cx="19" cy="9.4" r="1.3"/><circle cx="17.4" cy="13.6" r="1.3"/><circle cx="7.4" cy="5.2" r="1.3"/><circle cx="5" cy="9.4" r="1.3"/><circle cx="6.6" cy="13.6" r="1.3"/><path d="M12 15.5v6.5M9.6 18h4.8"/></svg>
     Rosary</button>
-  <button id="tab-conf" role="tab" aria-selected="false" aria-controls="view-conf" data-view="conf">
-    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H11l-4.5 4v-4A2.5 2.5 0 0 1 4 13.5z"/><path d="M12 6v7M9.5 8.5h5"/></svg>
-    Confession</button>
+  <button id="tab-more" role="tab" aria-selected="false" aria-controls="view-more" data-view="more">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 7h15M4.5 12h15M4.5 17h15"/></svg>
+    Menu</button>
 </nav>
 <script>
 (() => {
@@ -818,10 +902,217 @@
     $('conf-wk-next').onclick = () => { if(confWeek < 8){ confWeek++; renderConf(); } };
   }
 
+  // ---------- Catholic calendar (US, Latin rite, per USCCB) ----------
+  // Movable dates are computed (Gregorian computus) so the list stays right in future years.
+  const CAL_CHECKED = 'Oct 31, 2026';
+  const CD = (y, m, d) => new Date(y, m - 1, d, 12);
+  const cAdd = (d, n) => new Date(d.getFullYear(), d.getMonth(), d.getDate() + n, 12);
+  const cKey = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  function easter(Y){ // Anonymous Gregorian algorithm (Meeus/Jones/Butcher)
+    const a = Y % 19, b = Math.floor(Y / 100), c = Y % 100, d = Math.floor(b / 4), e = b % 4,
+      f = Math.floor((b + 8) / 25), g = Math.floor((b - f + 1) / 3), h = (19*a + b - d - g + 15) % 30,
+      i = Math.floor(c / 4), k = c % 4, l = (32 + 2*e + 2*i - h - k) % 7, m = Math.floor((a + 11*h + 22*l) / 451),
+      mo = Math.floor((h + l - 7*m + 114) / 31), da = ((h + l - 7*m + 114) % 31) + 1;
+    return CD(Y, mo, da);
+  }
+  const advent1 = Y => { const x = CD(Y, 12, 25); return cAdd(x, -((x.getDay() || 7) + 21)); };
+  const epiphanyUS = Y => { const x = CD(Y, 1, 2); return cAdd(x, (7 - x.getDay()) % 7); }; // Sunday Jan 2–8
+  const baptism = Y => { const e = epiphanyUS(Y); return e.getDate() >= 7 ? cAdd(e, 1) : cAdd(e, 7); };
+  const nthDow = (Y, m, dow, n) => { const x = CD(Y, m, 1); return cAdd(x, (dow - x.getDay() + 7) % 7 + 7*(n-1)); };
+  const lastDow = (Y, m, dow) => { const x = CD(Y, m + 1, 0); return cAdd(x, -((x.getDay() - dow + 7) % 7)); };
+
+  // [month, day, name, rank, extra]  rank: sol | feast | mem | comm   extra: lord (Feast of the Lord: replaces an Ordinary Time Sunday)
+  const CAL_FIXED = [
+    [1,1,'Mary, the Holy Mother of God','sol','hdoAbr'],
+    [1,4,'St. Elizabeth Ann Seton','mem'], [1,5,'St. John Neumann','mem'],
+    [1,25,'Conversion of St. Paul','feast'], [2,2,'Presentation of the Lord','feast','lord'],
+    [2,22,'Chair of St. Peter','feast'], [3,19,'St. Joseph, Spouse of Mary','sol'],
+    [3,25,'Annunciation of the Lord','sol'], [4,25,'St. Mark, Evangelist','feast'],
+    [5,3,'Sts. Philip and James, Apostles','feast'], [5,14,'St. Matthias, Apostle','feast'],
+    [5,31,'Visitation of the Blessed Virgin Mary','feast'], [6,24,'Nativity of St. John the Baptist','sol'],
+    [6,29,'Sts. Peter and Paul, Apostles','sol'], [7,3,'St. Thomas, Apostle','feast'],
+    [7,14,'St. Kateri Tekakwitha','mem'], [7,22,'St. Mary Magdalene','feast'], [7,25,'St. James, Apostle','feast'],
+    [7,26,'Sts. Joachim and Anne','mem'], [8,6,'Transfiguration of the Lord','feast','lord'],
+    [8,10,'St. Lawrence','feast'], [8,15,'Assumption of the Blessed Virgin Mary','sol','hdoAbr'],
+    [8,22,'Queenship of the Blessed Virgin Mary','mem'], [8,24,'St. Bartholomew, Apostle','feast'],
+    [9,8,'Nativity of the Blessed Virgin Mary','feast'], [9,14,'Exaltation of the Holy Cross','feast','lord'],
+    [9,15,'Our Lady of Sorrows','mem'], [9,21,'St. Matthew, Apostle','feast'],
+    [9,29,'Sts. Michael, Gabriel and Raphael','feast'], [10,4,'St. Francis of Assisi','mem'],
+    [10,7,'Our Lady of the Rosary','mem'], [10,18,'St. Luke, Evangelist','feast'],
+    [10,19,'Sts. John de Brébeuf, Isaac Jogues & Companions','mem'], [10,28,'Sts. Simon and Jude, Apostles','feast'],
+    [11,1,'All Saints','sol','hdoAbr'], [11,2,'All Souls (All the Faithful Departed)','comm'],
+    [11,9,'Dedication of the Lateran Basilica','feast','lord'], [11,13,'St. Frances Xavier Cabrini','mem'],
+    [11,21,'Presentation of the Blessed Virgin Mary','mem'], [11,30,'St. Andrew, Apostle','feast'],
+    [12,8,'Immaculate Conception','sol','hdo'], [12,12,'Our Lady of Guadalupe','feast'],
+    [12,25,'Nativity of the Lord (Christmas)','sol','hdo'], [12,26,'St. Stephen, First Martyr','feast'],
+    [12,27,'St. John, Apostle and Evangelist','feast'], [12,28,'Holy Innocents','feast']
+  ];
+  // Obligatory memorials that can collide with the Immaculate Heart (it then becomes optional)
+  const CAL_OBL_MEM_JUNE = ['6-1','6-3','6-5','6-11','6-13','6-21','6-28'];
+
+  function calYear(Y){
+    const ev = [];   // {d, name, kinds:[], note, color}
+    const add = (d, name, kinds, note = '', color = '') => ev.push({ d, name, kinds, note, color });
+    const E = easter(Y), ash = cAdd(E, -46), palm = cAdd(E, -7), dm = cAdd(E, 7), pent = cAdd(E, 49);
+    const adv = advent1(Y), ck = advent1(Y - 1), bap = baptism(Y), xmas = CD(Y, 12, 25);
+    const holyFam = xmas.getDay() === 0 ? CD(Y, 12, 30) : cAdd(xmas, 7 - xmas.getDay());
+    const inRange = (d, a, b) => d >= a && d <= b;
+    const holyWeekOctave = d => inRange(d, palm, dm);
+    const priv = d => d.getDay() === 0 && (inRange(d, adv, CD(Y,12,24)) || inRange(d, ck, CD(Y-1,12,24)) || inRange(d, ash, pent));
+    const movSol = new Set(); // dates already holding a movable solemnity/feast
+    // --- seasons & movable celebrations ---
+    add(bap, 'Baptism of the Lord', ['feast'], 'Christmas season ends', 'white');
+    add(cAdd(bap, 1), 'Ordinary Time begins', ['season'], '', 'green');
+    add(epiphanyUS(Y), 'Epiphany of the Lord', ['sol'], 'US: Sunday between Jan 2 and Jan 8', 'white');
+    add(ash, 'Ash Wednesday', ['fast','season'], 'Lent begins · fast & abstinence', 'violet');
+    for(let f = cAdd(ash, 2); f < cAdd(E, -2); f = cAdd(f, 7)) add(f, 'Friday of Lent', ['abst']);
+    add(cAdd(ash, 25), 'Laetare Sunday', ['season'], '4th Sunday of Lent · rose may be worn', 'rose');
+    add(palm, 'Palm Sunday', ['season'], 'Holy Week begins', 'red');
+    add(cAdd(E, -3), 'Holy Thursday', ['season'], 'Paschal Triduum begins with the evening Mass of the Lord’s Supper', 'white');
+    add(cAdd(E, -2), 'Good Friday', ['fast'], 'Fast & abstinence', 'red');
+    add(cAdd(E, -1), 'Holy Saturday', ['season'], 'Easter Vigil after nightfall', 'white');
+    add(E, 'Easter Sunday', ['sol'], 'The Resurrection of the Lord', 'white');
+    add(dm, 'Divine Mercy Sunday', ['season'], '2nd Sunday of Easter', 'white');
+    add(cAdd(E, 42), 'Ascension of the Lord', ['sol'], `Florida & most US provinces: Sunday. Kept Thursday (${fmtShort(cAdd(E, 39))}, holy day of obligation) in Boston, Hartford, New York, Omaha, Philadelphia`, 'white');
+    add(pent, 'Pentecost Sunday', ['sol'], 'Easter season ends', 'red');
+    add(cAdd(E, 50), 'Mary, Mother of the Church', ['mem'], 'Ordinary Time resumes', 'white');
+    add(cAdd(E, 56), 'Most Holy Trinity', ['sol'], '', 'white');
+    add(cAdd(E, 63), 'Body and Blood of Christ (Corpus Christi)', ['sol'], 'US: Sunday', 'white');
+    add(cAdd(E, 68), 'Most Sacred Heart of Jesus', ['sol'], '', 'white');
+    const ih = cAdd(E, 69), ihOpt = CAL_OBL_MEM_JUNE.includes(`${ih.getMonth()+1}-${ih.getDate()}`);
+    add(ih, 'Immaculate Heart of Mary', ['mem'], ihOpt ? 'Optional this year (falls on another memorial)' : '', 'white');
+    add(cAdd(adv, -7), 'Christ the King', ['sol'], 'Last Sunday of the liturgical year', 'white');
+    add(adv, 'First Sunday of Advent', ['season'], 'New liturgical year begins', 'violet');
+    add(cAdd(adv, 14), 'Gaudete Sunday', ['season'], '3rd Sunday of Advent · rose may be worn', 'rose');
+    add(holyFam, 'Holy Family of Jesus, Mary and Joseph', ['feast'], '', 'white');
+    [E, cAdd(E,-3), cAdd(E,-2), cAdd(E,-1), pent, cAdd(E,56), cAdd(E,63), cAdd(E,68), cAdd(E,42), epiphanyUS(Y), bap, holyFam, ash, cAdd(adv,-7)]
+      .forEach(d => movSol.add(cKey(d)));
+    // --- fixed celebrations with US precedence/transfer rules ---
+    const taken = d => movSol.has(cKey(d)) || priv(d) || holyWeekOctave(d) || ev.some(e => sameDay(e.d, d) && e.kinds.includes('sol'));
+    for(const [m, day, name, rank, extra] of CAL_FIXED){
+      let d = CD(Y, m, day), note = '';
+      const isSun = d.getDay() === 0;
+      if(rank === 'sol'){
+        if(m === 12 && day === 25){ /* never moves */ }
+        else if(name.startsWith('Mary, the Holy') || (m === 8 && day === 15) || (m === 11 && day === 1)){ /* replace any Sunday */ }
+        else if(holyWeekOctave(d) || priv(d) || movSol.has(cKey(d))){
+          if(m === 3 && day === 25 && holyWeekOctave(d)) d = cAdd(dm, 1);
+          else if(m === 3 && day === 19 && holyWeekOctave(d)) d = cAdd(palm, -1);
+          else if(m === 6 && day === 24 && sameDay(d, cAdd(E, 68))) d = CD(Y, 6, 23);
+          else { do d = cAdd(d, 1); while(taken(d)); }
+          note = `Moved from ${fmtShort(CD(Y, m, day))}`;
+        }
+        const kinds = ['sol'];
+        if(extra === 'hdo') kinds.unshift('hdo');
+        if(extra === 'hdoAbr'){
+          const w = d.getDay();
+          if(w === 6 || w === 1) note = `Not obligatory this year (falls on a ${w === 6 ? 'Saturday' : 'Monday'})`;
+          else kinds.unshift('hdo');
+        }
+        if(m === 12 && day === 8) note = (note ? note + ' · obligation transfers too · ' : '') + 'Patronal feast of the USA';
+        if(m === 12 && day === 25) note = 'Christmas season begins';
+        add(d, name, kinds, note);
+        movSol.add(cKey(d));
+      } else if(rank === 'feast'){
+        if(holyWeekOctave(d) || movSol.has(cKey(d)) || sameDay(d, ash) || ev.some(e => sameDay(e.d, d) && e.kinds.includes('sol'))) continue;
+        if(isSun && !(extra === 'lord' && !priv(d))) continue;
+        add(d, name, ['feast'], m === 12 && day === 8 ? '' : (m === 12 && day === 12 ? 'Patroness of the Americas · US feast' : ''));
+        movSol.add(cKey(d));
+      } else if(rank === 'comm'){
+        add(d, name, ['comm'], isSun ? 'Celebrated even on a Sunday' : '');
+      } else {
+        if(isSun || holyWeekOctave(d) || movSol.has(cKey(d)) || sameDay(d, ash) || inRange(d, xmas, CD(Y,12,31))) continue;
+        if(ev.some(e => sameDay(e.d, d) && (e.kinds.includes('sol') || e.kinds.includes('feast')))) continue;
+        add(d, name, ['mem'], inRange(d, ash, palm) ? 'Lent: commemoration only' : '');
+      }
+    }
+    // --- US observances & civil holidays ---
+    const jan22 = CD(Y, 1, 22);
+    add(jan22.getDay() === 0 ? CD(Y, 1, 23) : jan22, 'Day of Prayer for the Legal Protection of Unborn Children', ['obs'], 'US: Jan 22 (Jan 23 when the 22nd is a Sunday)');
+    add(lastDow(Y, 5, 1), 'Memorial Day', ['holiday'], 'Pray for the dead who served');
+    add(CD(Y, 7, 4), 'Independence Day', ['holiday'], 'In the US Proper Calendar (Mass “for the Country”)');
+    add(nthDow(Y, 11, 4, 4), 'Thanksgiving Day', ['holiday'], 'In the US Proper Calendar (Mass “in Thanksgiving to God”)');
+    // --- First Fridays & Saturdays ---
+    for(let m = 1; m <= 12; m++){ add(nthDow(Y, m, 5, 1), 'First Friday', ['first']); add(nthDow(Y, m, 6, 1), 'First Saturday', ['first']); }
+    return ev;
+  }
+  function fmtShort(d){ return d.toLocaleDateString('en-US', { month:'short', day:'numeric' }); }
+
+  // Season of a given day, with liturgical color
+  function calSeason(d){
+    const Y = d.getFullYear(), E = easter(Y), ash = cAdd(E, -46), pent = cAdd(E, 49), adv = advent1(Y), bap = baptism(Y);
+    const s = (name, color) => ({ name, color });
+    if(d >= adv && d < CD(Y, 12, 25)) return sameDay(d, cAdd(adv, 14)) ? s('Advent', 'rose') : s('Advent', 'violet');
+    if(d >= CD(Y, 12, 25) || d <= bap) return s('Christmas', 'white');
+    if(d < ash) return s('Ordinary Time', 'green');
+    if(d < cAdd(E, -3)) return sameDay(d, cAdd(ash, 25)) ? s('Lent', 'rose') : sameDay(d, cAdd(E, -7)) ? s('Lent · Holy Week', 'red') : d > cAdd(E, -7) ? s('Lent · Holy Week', 'violet') : s('Lent', 'violet');
+    if(d < E) return s('Paschal Triduum', sameDay(d, cAdd(E, -2)) ? 'red' : 'white');
+    if(d <= pent) return s('Easter', sameDay(d, pent) ? 'red' : 'white');
+    return s('Ordinary Time', 'green');
+  }
+  function calEvents(from, to){
+    const out = [];
+    for(let Y = from.getFullYear(); Y <= to.getFullYear(); Y++) out.push(...calYear(Y));
+    return out.filter(e => e.d >= from && e.d <= to).sort((a, b) => a.d - b.d || calRank(a) - calRank(b));
+  }
+  function calRank(e){ const o = ['hdo','sol','fast','comm','feast','season','mem','abst','obs','holiday','first']; return Math.min(...e.kinds.map(k => o.indexOf(k))); }
+  const CAL_BADGE = { hdo:'Holy Day of Obligation', sol:'Solemnity', feast:'Feast', mem:'Memorial', comm:'Commemoration',
+    fast:'Fast & Abstinence', abst:'Abstinence', season:'Season', holiday:'Holiday', obs:'Day of Prayer', first:'Devotion' };
+  const CAL_FILTERS = { all: null, major: ['hdo','sol','feast','comm','season','fast'], fast: ['fast','abst'] };
+  let calFilter = 'all', calReady = false;
+  const calDot = c => c ? `<i class="lc lc-${c}" title="${c}"></i>` : '';
+  const calRel = (d, t) => { const n = Math.round((d - t) / 864e5); return n === 0 ? 'Today' : n === 1 ? 'Tomorrow' : `in ${n} days`; };
+  const calItem = e => `<li class="ci${e.kinds.includes('hdo') ? ' hdo' : ''}"><div class="ci-n">${calDot(e.color)}${esc(e.name)}</div>
+      <div class="ci-b">${e.kinds.map(k => `<span class="cb cb-${k}">${CAL_BADGE[k]}</span>`).join('')}</div>${e.note ? `<div class="ci-x">${esc(e.note)}</div>` : ''}</li>`;
+  function renderCal(){
+    const t = today(), end = new Date(t.getFullYear() + 1, 11, 31, 12);
+    const all = calEvents(t, end), season = calSeason(t);
+    const todays = all.filter(e => sameDay(e.d, t) && !e.kinds.includes('first'));
+    const nextHdo = all.find(e => e.kinds.includes('hdo'));
+    const nextFast = all.find(e => e.kinds.includes('fast'));
+    const todayColor = (todays.find(e => e.color) || {}).color || season.color;
+    $('cal-now').innerHTML = `<div class="ros-kicker">Today · ${t.toLocaleDateString('en-US', { weekday:'long', month:'short', day:'numeric' })}</div>
+      <div class="cal-season">${calDot(todayColor)}<b>${esc(season.name)}</b><span>Liturgical color: ${todayColor}</span></div>
+      ${todays.length ? `<ul class="ci-list">${todays.map(calItem).join('')}</ul>` : ''}
+      ${nextHdo ? `<div class="cal-next"><div class="cal-next-k">Next holy day of obligation</div>
+        <div class="cal-next-n">${esc(nextHdo.name)}</div>
+        <div class="cal-next-d">${nextHdo.d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })} · <b>${calRel(nextHdo.d, t)}</b></div>
+        ${nextHdo.d.getDay() === 0 ? '<div class="ci-x">Falls on a Sunday — the Sunday Mass fulfills it.</div>' : '<div class="ci-x">Vigil Masses the evening before also count.</div>'}</div>` : ''}
+      ${nextFast ? `<div class="cal-next"><div class="cal-next-k">Next day of fasting</div><div class="cal-next-n">${esc(nextFast.name)}</div>
+        <div class="cal-next-d">${nextFast.d.toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })} · <b>${calRel(nextFast.d, t)}</b></div></div>` : ''}`;
+    document.querySelectorAll('#cal-filter button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.f === calFilter)));
+    const keep = CAL_FILTERS[calFilter];
+    const list = all.filter(e => !keep || e.kinds.some(k => keep.includes(k)));
+    let html = '', month = '', day = null, items = [];
+    const flush = () => { if(!day) return;
+      const isT = sameDay(day, t), nx = nextHdo && sameDay(day, nextHdo.d);
+      html += `<div class="cday${isT ? ' today' : ''}${nx ? ' next' : ''}"><div class="cday-d"><small>${day.toLocaleDateString('en-US', { weekday:'short' })}</small><b>${day.getDate()}</b>${isT ? '<em>Today</em>' : ''}</div><ul class="ci-list">${items.map(calItem).join('')}</ul></div>`;
+      items = []; };
+    for(const e of list){
+      const m = e.d.toLocaleDateString('en-US', { month:'long', year:'numeric' });
+      if(!day || !sameDay(day, e.d)){ flush(); day = e.d; }
+      if(m !== month){ html += `<h3 class="ros-h cal-m">${m}</h3>`; month = m; }
+      items.push(e);
+    }
+    flush();
+    $('cal-list').innerHTML = html || '<p class="cd-none">Nothing in this range.</p>';
+    $('cal-checked').textContent = CAL_CHECKED;
+  }
+  function wireCal(){
+    $('cal-filter').onclick = e => { const b = e.target.closest('button'); if(!b) return; calFilter = b.dataset.f; renderCal(); };
+  }
+
+  // ---------- More menu ----------
+  const MORE_KEY = 'moreSection';
+  const MORE_VIEWS = ['more','conf','cal'];
+  function openSection(s){ try { localStorage.setItem(MORE_KEY, s); } catch {} setView(s); }
+  document.querySelectorAll('[data-go]').forEach(b => b.onclick = () => openSection(b.dataset.go));
+  document.querySelectorAll('.back-menu').forEach(b => b.onclick = () => setView('more'));
+
   // ---------- tabs ----------
   const TAB_KEY = 'massTab';  // not "mr:" — that prefix is pruned by the readings cache
-  const VIEWS = ['readings','parts','rosary','conf'];
-  const scrollPos = { readings:0, parts:0, rosary:0, conf:0 };
+  const VIEWS = ['readings','parts','rosary','more','conf','cal'];
+  const scrollPos = { readings:0, parts:0, rosary:0, more:0, conf:0, cal:0 };
   let view = 'readings', partsReady = false, rosaryReady = false;
   function setView(v, restore){
     if(!VIEWS.includes(v)) v = 'readings';
@@ -829,18 +1120,26 @@
     scrollPos[view] = scrollY;
     view = v;
     if(v === 'parts' && !partsReady){ renderParts(); partsReady = true; }
+    if(v === 'cal'){ if(!calReady){ wireCal(); calReady = true; } renderCal(); }
     if(v === 'conf'){ if(!confReady){ wireConf(); confReady = true; } confWeek = 0; renderConf(); }
     if(v === 'rosary'){ if(!rosaryReady){ wireRosary(); rosaryReady = true; } rosSet = null; renderRosary(); }
     VIEWS.forEach(x => { $('view-'+x).hidden = x !== v; });
-    document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === v)));
+    document.querySelectorAll('.tabbar button').forEach(b => b.setAttribute('aria-selected', String(b.dataset.view === 'more' ? MORE_VIEWS.includes(v) : b.dataset.view === v)));
     if(v === 'parts') document.title = 'Mass Parts';
     else if(v === 'rosary') document.title = 'Rosary';
     else if(v === 'conf') document.title = 'Confession Times';
+    else if(v === 'cal') document.title = 'Catholic Calendar';
+    else if(v === 'more') document.title = 'Menu';
     else if(current) document.title = sameDay(current, today()) ? 'Mass Readings · Today' : 'Mass Readings · ' + current.toLocaleDateString('en-US',{month:'short',day:'numeric'});
     window.scrollTo(0, restore ? 0 : scrollPos[v]);
     try { localStorage.setItem(TAB_KEY, v); } catch {}
   }
   document.querySelector('.tabbar').onclick = e => { const b = e.target.closest('button'); if(!b) return;
+    if(b.dataset.view === 'more' && view !== 'more'){
+      if(MORE_VIEWS.includes(view)) return setView('more');           // tap again inside a section → back to the menu
+      let last = null; try { last = localStorage.getItem(MORE_KEY); } catch {}
+      return setView(MORE_VIEWS.includes(last) ? last : 'more');      // reopen the last section used
+    }
     if(b.dataset.view === view) window.scrollTo({top:0, behavior:'smooth'}); else setView(b.dataset.view); };
 
   $('prev').onclick = () => show(addDays(current,-1));
