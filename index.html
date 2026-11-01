@@ -302,6 +302,33 @@
   .cal-sel-s{display:flex;align-items:center;font:500 13px var(--sans);color:var(--muted);margin-top:6px}
   .cal-sel .ci-list{margin-top:10px}
   .cday[data-d]{cursor:pointer}
+  /* Examination of Conscience */
+  .exam{margin:22px 0 4px;border:1px solid var(--rule);border-radius:14px;background:var(--card);padding:0 14px}
+  .exam summary{text-transform:none;letter-spacing:0;color:var(--fg);justify-content:flex-start;gap:12px;padding:12px 0}
+  .exam summary::after{margin-left:auto}
+  .exam-ic{flex:none;width:36px;height:36px;border-radius:10px;display:grid;place-items:center;color:var(--accent);font-size:18px;background:color-mix(in srgb, var(--accent) 12%, transparent)}
+  .exam-t{display:flex;flex-direction:column}
+  .exam-t b{font:600 17px/1.25 var(--serif)}
+  .exam-t small{font:500 12.5px/1.4 var(--sans);color:var(--muted)}
+  .exam-body{padding:2px 0 14px}
+  .exam-page{appearance:none;display:block;width:100%;padding:0;border:1px solid var(--rule);border-radius:8px;overflow:hidden;background:#fff;cursor:zoom-in;box-shadow:0 1px 6px rgba(0,0,0,.12)}
+  .exam-page img,.exam-scroll img{display:block;width:100%;height:auto}
+  .exam-acts{display:flex;gap:8px;margin-top:12px}
+  .exam-acts > *{flex:1;appearance:none;text-align:center;padding:11px 10px;border-radius:10px;font:600 14.5px/1.2 var(--sans);text-decoration:none;cursor:pointer}
+  .exam-acts button{border:0;background:var(--accent);color:var(--bg)}
+  .exam-acts a{border:1px solid var(--rule);background:var(--bg);color:var(--accent)}
+  .exam-cr{font:500 11.5px/1.45 var(--sans);color:var(--muted);margin:10px 0 0}
+  .exam-cr a{color:var(--accent)}
+  .exam-view{position:fixed;inset:0;z-index:50;background:var(--bg);display:flex;flex-direction:column}
+  .exam-view[hidden]{display:none}
+  .exam-bar{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:calc(env(safe-area-inset-top) + 8px) 12px 8px;border-bottom:1px solid var(--rule);background:var(--bg)}
+  .exam-bar b{font:700 12px var(--sans);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .exam-bar button{appearance:none;flex:none;border:1px solid var(--rule);background:var(--card);color:var(--accent);border-radius:18px;padding:8px 14px;font:600 14px var(--sans);cursor:pointer}
+  .exam-scroll{flex:1;overflow:auto;-webkit-overflow-scrolling:touch;padding:12px 12px calc(env(safe-area-inset-bottom) + 12px);background:#5a5550}
+  .exam-scroll img{background:#fff;border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,.35)}
+  .exam-view.zoom .exam-scroll img{width:240%;max-width:none}
+  html.exam-lock, html.exam-lock body{overflow:hidden}
+  @media (prefers-color-scheme: dark){ .exam-page img,.exam-scroll img{filter:brightness(.92)} .exam-scroll{background:#0b0a08} }
 </style>
 </head>
 <body>
@@ -369,6 +396,20 @@
 <div class="card conf-today" id="conf-today"></div>
       <div class="conf-wk"><button id="conf-wk-prev" aria-label="Previous week">‹</button><div id="conf-wk-label"></div><button id="conf-wk-next" aria-label="Next week">›</button></div>
       <div id="conf-week"></div>
+      <details class="exam" id="exam">
+        <summary><span class="exam-ic" aria-hidden="true">✙</span><span class="exam-t"><b>Examination of Conscience</b><small>Ten Commandments · USCCB</small></span></summary>
+        <div class="exam-body">
+          <button class="exam-page" id="exam-zoom" aria-label="Open the examination of conscience full screen to zoom">
+            <img src="examination-of-conscience.png" width="1530" height="1980" loading="lazy" decoding="async"
+              alt="A Brief Examination of Conscience Based on the Ten Commandments, from the United States Conference of Catholic Bishops. One question for each commandment, then Christ’s Two Commandments and St. Paul’s description of love (1 Cor 13:4-8).">
+          </button>
+          <div class="exam-acts">
+            <button id="exam-zoom2">Zoom to read</button>
+            <a href="examination-of-conscience.pdf" target="_blank" rel="noopener">Open PDF</a>
+          </div>
+          <p class="exam-cr">© 2013 United States Conference of Catholic Bishops. Reproduced without adaptation with permission for non-commercial use. <a href="https://www.usccb.org/resources/Examination-of-Conscience-Ten-Commandments.pdf" target="_blank" rel="noopener">Original at usccb.org</a></p>
+        </div>
+      </details>
       <h3 class="ros-h">Monthly</h3>
       <div class="card" id="conf-monthly"></div>
       <h3 class="ros-h">Parishes</h3>
@@ -416,6 +457,10 @@
     <p><b>Sources:</b> USCCB Liturgical Calendar for the Dioceses of the USA (2026 &amp; 2027), USCCB complementary norm to canon 1246, USCCB “Fast &amp; Abstinence.” Movable dates are calculated from the date of Easter. Diocesan and parish feasts aren’t included. Last checked <span id="cal-checked"></span>.</p>
   </div>
 </main>
+</div>
+<div class="exam-view" id="exam-view" role="dialog" aria-modal="true" aria-label="Examination of Conscience" hidden>
+  <div class="exam-bar"><button id="exam-fit">Fit page</button><b>Examination of Conscience</b><button id="exam-close">Done</button></div>
+  <div class="exam-scroll" id="exam-scroll"><img src="examination-of-conscience.png" width="1530" height="1980" alt="A Brief Examination of Conscience Based on the Ten Commandments (USCCB)" loading="lazy" decoding="async"></div>
 </div>
 <nav class="tabbar" role="tablist" aria-label="Sections">
   <button id="tab-readings" role="tab" aria-selected="true" aria-controls="view-readings" data-view="readings">
@@ -1232,6 +1277,20 @@
       calSelDay = new Date(calMonth.getFullYear(), calMonth.getMonth(), +r.dataset.d, 12); renderMonth();
       $('cal-grid').scrollIntoView({ behavior:'smooth', block:'center' }); };
   }
+
+  // ---------- Examination of Conscience (USCCB PDF, rendered to an image for iPhone) ----------
+  (() => {
+    const v = $('exam-view'), sc = $('exam-scroll');
+    const setZoom = z => { v.classList.toggle('zoom', z); $('exam-fit').textContent = z ? 'Fit page' : 'Zoom in'; };
+    const open = () => { v.hidden = false; document.documentElement.classList.add('exam-lock'); setZoom(true); sc.scrollTo(0, 0); $('exam-close').focus(); };
+    const close = () => { v.hidden = true; document.documentElement.classList.remove('exam-lock'); };
+    $('exam-zoom').onclick = open; $('exam-zoom2').onclick = open;
+    $('exam-close').onclick = close;
+    $('exam-fit').onclick = () => { setZoom(!v.classList.contains('zoom')); sc.scrollTo(0, 0); };
+    document.addEventListener('keydown', e => { if(e.key === 'Escape' && !v.hidden) close(); });
+    try { if(localStorage.getItem('examOpen') === '1') $('exam').open = true; } catch {}
+    $('exam').addEventListener('toggle', () => { try { localStorage.setItem('examOpen', $('exam').open ? '1' : '0'); } catch {} });
+  })();
 
   // ---------- More menu ----------
   const MORE_KEY = 'moreSection';
